@@ -1,0 +1,237 @@
+/* Base Styles & Background */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+  background-color: #0b0b12;
+  color: #ffffff;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.landing-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: #0b0b12;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 3rem;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo-icon {
+  font-size: 1.5rem;
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #ff3377;
+  letter-spacing: -0.5px;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Base Buttons */
+.btn {
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: 700;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-outline-cyan {
+  background: transparent;
+  border: 1px solid #143d4a;
+  color: #00e5ff;
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
+}
+
+.btn-outline-cyan:hover {
+  background: rgba(0, 229, 255, 0.1);
+}
+
+.btn-pink {
+  background-color: #ff3377;
+  color: #ffffff;
+  padding: 0.6rem 1.4rem;
+  border-radius: 10px;
+}
+
+.btn-pink:hover {
+  background-color: #e62e6b;
+  box-shadow: 0 0 15px rgba(255, 51, 119, 0.4);
+}
+
+/* Hero Section */
+.hero-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem 1.5rem 6rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Badge Top */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 51, 119, 0.05);
+  border: 1px solid rgba(255, 51, 119, 0.3);
+  color: #ff5c8d;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  padding: 0.4rem 1rem;
+  border-radius: 50px;
+  margin-bottom: 2.5rem;
+}
+
+.badge-dot {
+  color: #ff3377;
+  font-size: 1.2rem;
+  line-height: 0;
+}
+
+/* Main Headline */
+.hero-title {
+  font-size: 4rem;
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: -1px;
+  margin-bottom: 1.5rem;
+  color: #ffffff;
+}
+
+/* Text Glow & Highlight Colors */
+.highlight-pink {
+  color: #ff3377;
+  text-shadow: 0 0 25px rgba(255, 51, 119, 0.6);
+}
+
+.highlight-lime {
+  color: #ccff00;
+  text-shadow: 0 0 25px rgba(204, 255, 0, 0.6);
+}
+
+/* Subtitle Description */
+.hero-description {
+  color: #a0a5b5;
+  font-size: 1.15rem;
+  line-height: 1.6;
+  max-width: 650px;
+  margin-bottom: 3rem;
+  font-weight: 400;
+}
+
+/* CTA Container & Large Buttons */
+.cta-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+}
+
+.btn-pink-large {
+  background-color: #ff3377;
+  color: #ffffff;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(255, 51, 119, 0.4);
+}
+
+.btn-pink-large:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 35px rgba(255, 51, 119, 0.6);
+}
+
+.btn-dark-outline {
+  background: #12131c;
+  border: 1px solid #252836;
+  color: #ffffff;
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+  border-radius: 12px;
+}
+
+.btn-dark-outline:hover {
+  background: #1a1c29;
+  border-color: #3b3f54;
+}
+
+/* Floating Help Button */
+.help-button {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #0b0b12;
+  border: none;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
+}
+
+.help-button:hover {
+  transform: scale(1.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .navbar {
+    padding: 1rem 1.5rem;
+  }
+
+  .cta-container {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-pink-large,
+  .btn-dark-outline {
+    width: 100%;
+  }
+}

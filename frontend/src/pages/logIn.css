@@ -1,0 +1,171 @@
+/* Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Outfit",sans-serif;
+}
+
+body{
+    background:#05050d;
+}
+
+/* ========================= */
+.overlay{
+    position:fixed;
+    inset:0;
+
+    background:rgba(0,0,0,.65);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    z-index:1000;
+}
+
+.auth-container{
+    width:100%;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    background:linear-gradient(135deg,#060611,#090b17,#04040b);
+}
+
+.auth-card{
+    width:520px;
+    background:#10101d;
+    border:1px solid #00d8ff66;
+    border-radius:22px;
+    padding:40px;
+    box-shadow:
+        0 0 20px rgba(0,255,255,.08),
+        0 0 40px rgba(0,255,255,.04);
+}
+
+/* ========================= */
+
+.auth-tabs{
+    display:flex;
+    background:#0a0a14;
+    border-radius:16px;
+    padding:6px;
+    margin-bottom:35px;
+}
+
+.tab{
+    flex:1;
+    padding:16px;
+    border:none;
+    border-radius:12px;
+    background:transparent;
+    color:#777;
+    font-size:22px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.35s;
+}
+
+.tab.active{
+    background:#0c2a33;
+    color:#00e7ff;
+    border:1px solid #00dfff88;
+}
+
+.tab:hover{
+    color:#00e7ff;
+}
+
+/* ========================= */
+
+.auth-form{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.auth-form input{
+    width:100%;
+    padding:18px 18px;
+    background:#090912;
+    border:1px solid #1b1b29;
+    border-radius:14px;
+    color:white;
+    font-size:18px;
+    outline:none;
+    transition:.3s;
+}
+
+.auth-form input::placeholder{
+    color:#686878;
+}
+
+.auth-form input:focus{
+    border-color:#00e7ff;
+    box-shadow:0 0 12px rgba(0,231,255,.2);
+}
+
+/* ========================= */
+
+.login-btn{
+    margin-top:8px;
+    padding:18px;
+    border:none;
+    border-radius:16px;
+    background:#12d8ec;
+    color:#090909;
+    font-size:32px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.35s;
+}
+
+.login-btn span{
+    margin-left:8px;
+}
+
+.login-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 0 20px rgba(18,216,236,.45);
+}
+
+/* ========================= */
+
+.auth-footer{
+    margin-top:22px;
+    text-align:center;
+    color:#595969;
+    font-size:17px;
+}
+
+.signup-link{
+    color:#00e7ff;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.signup-link:hover{
+    text-decoration:underline;
+}
+
+/* ========================= */
+
+@media(max-width:600px){
+
+    .auth-card{
+        width:100%;
+        padding:28px;
+    }
+
+    .tab{
+        font-size:18px;
+    }
+
+    .login-btn{
+        font-size:24px;
+    }
+}
