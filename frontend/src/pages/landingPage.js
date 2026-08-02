@@ -5,13 +5,16 @@ import './landingPage.css'
 import './logIn.css'
 import './signUp.css'
 
+
 function LandingPage(){
  const[isLogIn,setLogIn] = useState(false);
  const[isSignUp,setSignIn] = useState(false);
 
+
  const openLogIn = ()=>{
      console.log("Login clicked");
-          setLogIn(true);}
+          setLogIn(true)
+          setSignIn(false);}
  const closeLogIn = ()=>{
             setLogIn(false);
  }
@@ -20,11 +23,68 @@ function LandingPage(){
 
  const openSignUp= ()=>{
      console.log("Login clicked");
-          setSignIn(true);}
+          setSignIn(true);
+          setLogIn(false)
+        }
           
  const closeSignUp = ()=>{
             setSignIn(false);
  }
+
+ const [avatar ,setAvatar] = useState('🎓')
+ const [username , setUsername] = useState('');
+ const [email,setEmail] = useState('');
+ const [branch ,setBranch] = useState('');
+ const [section , setSec] = useState('');
+ const [password,setPass] = useState('');
+
+ const signUpApi = async(e)=>{
+  e.preventDefault();
+     const data = {avatar,username,email,branch,section,password};
+
+     try{
+     const response = await fetch('http://localhost:5713/SignUp',{
+                 method:'POST',
+                 headers:{'Content-Type' : 'application/json'},
+                 credentials:"include",
+                 body:JSON.stringify(data),
+     })
+
+     const res = await response.json();
+     if(response.ok){
+       setSignIn(false);
+       alert('User registered in Succesfully')
+     }else{
+      alert('wrong credentials')
+     }
+    }catch(error){
+      console.log(error);
+    }
+ }
+
+ const logInApi = async()=>{
+   const data = {email,password}
+   try{
+     const response = await fetch('http://localhost:5713/LogIn',{
+                        method:'POST',
+                        headers:{'Content-Type' : 'application/json '},
+                        credentials:"include",
+                        body:JSON.stringify(data)
+     })
+      const res = await response.json();
+      if(response.ok){
+        setLogIn(false)
+        alert('LogIn successful')
+      }else{
+        alert('failed')
+      }
+
+   }catch(error){
+     console.log(error)
+          
+   }
+ }
+
 
  
 
@@ -87,21 +147,23 @@ function LandingPage(){
             👋 Log In
           </button>
 
-          <button className="tab">
+          <button className="tab" onClick={openSignUp}>
             ✨ Sign Up
           </button>
         </div>
 
         {/* Form */}
-        <form className="auth-form">
+        <form className="auth-form" onSubmit={logInApi}>
           <input
             type="email"
             placeholder="email address"
+            onChange={(e)=>{setEmail(e.target.value)}}
           />
 
           <input
             type="password"
             placeholder="password"
+            onChange={(e)=>{setPass(e.target.value)}}
           />
 
           <button type="submit" className="login-btn">
@@ -112,7 +174,7 @@ function LandingPage(){
         {/* Footer */}
         <p className="auth-footer">
           No account?{" "}
-          <span className="signup-link">
+          <span className="signup-link" onClick={openSignUp}>
             Sign up
           </span>
         </p>
@@ -136,7 +198,7 @@ isSignUp && (
 
     <div className="auth-tabs">
 
-      <button className="tab">
+      <button className="tab" onClick={openLogIn}>
         👋 Log In
       </button>
 
@@ -151,56 +213,75 @@ isSignUp && (
     <h3 className="avatar-title">
       PICK YOUR AVATAR
     </h3>
+      <div className="avatar-grid">
 
-    <div className="avatar-grid">
+      <button className="avatar" onClick={()=>{setAvatar('🎓')}}>🎓</button>
+      <button className="avatar" onClick={()=>{setAvatar('🤓')}}>🤓</button>
+      <button className="avatar" onClick={()=>{setAvatar('😎')}}>😎</button>
+      <button className="avatar" onClick={()=>{setAvatar('🦊')}}>🦊</button>
+      <button className="avatar" onClick={()=>{setAvatar('🐼')}}>🐼</button>
+      <button className="avatar" onClick={()=>{setAvatar('🐸')}}>🐸</button>
+      <button className="avatar" onClick={()=>{setAvatar('🦄')}}>🦄</button>
 
-      <button className="avatar">🎓</button>
-      <button className="avatar">🤓</button>
-      <button className="avatar">😎</button>
-      <button className="avatar">🦊</button>
-      <button className="avatar">🐼</button>
-      <button className="avatar">🐸</button>
-      <button className="avatar">🦄</button>
-
-      <button className="avatar">🐙</button>
-      <button className="avatar">🎮</button>
-      <button className="avatar">🎸</button>
-      <button className="avatar">🌟</button>
-      <button className="avatar">🔥</button>
+      <button className="avatar" onClick={()=>{setAvatar('🐙')}}>🐙</button>
+      <button className="avatar" onClick={()=>{setAvatar('🎮')}}>🎮</button>
+      <button className="avatar" onClick={()=>{setAvatar('🎸')}}>🎸</button>
+      <button className="avatar" onClick={()=>{setAvatar('🌟')}}>🌟</button>
+      <button className="avatar" onClick={()=>{setAvatar('🔥')}}>🔥</button>
 
     </div>
 
+    
+
     {/* Form */}
 
-    <form className="signup-form">
+    <form className="signup-form" onSubmit={signUpApi}>
+    
 
       <input
         type="text"
         placeholder="username (e.g. study_beast)"
+        onChange={(e)=>{setUsername(e.target.value)}}
       />
 
       <input
         type="email"
         placeholder="email address"
+        onChange={(e)=>{setEmail(e.target.value)}}
+      />
+
+      
+
+      <input
+        type="text"
+        placeholder="Branch"
+        onChange={(e)=>{setBranch(e.target.value)}}
+      />
+
+      <input
+        type="text"
+        placeholder="Section"
+        onChange={(e)=>{setSec(e.target.value)}}
       />
 
       <input
         type="password"
         placeholder="password"
+        onChange = {(e)=>{setPass(e.target.value)}}
       />
 
       <button
         type="submit"
-        className="signup-btn"
+        className="signup-btn" onClick={signUpApi}
       >
         Create Account 🚀
       </button>
 
     </form>
 
-    <p className="signup-footer">
+    <p className="signup-footer" >
       Already have one?
-      <span> Log In</span>
+      <span onClick={openLogIn}> Log In</span>
     </p>
 
   </div>
