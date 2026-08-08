@@ -9,6 +9,7 @@ import './signUp.css'
 function LandingPage(){
  const[isLogIn,setLogIn] = useState(false);
  const[isSignUp,setSignIn] = useState(false);
+ const navigate = useNavigate();
 
 
  const openLogIn = ()=>{
@@ -37,6 +38,7 @@ function LandingPage(){
  const [branch ,setBranch] = useState('');
  const [section , setSec] = useState('');
  const [password,setPass] = useState('');
+ const [tag,setTag] = useState(false);
 
  const signUpApi = async(e)=>{
   e.preventDefault();
@@ -62,7 +64,8 @@ function LandingPage(){
     }
  }
 
- const logInApi = async()=>{
+ const logInApi = async(e)=>{
+  e.preventDefault() //since form triggers normal browser behaviour thats why we used it 
    const data = {email,password}
    try{
      const response = await fetch('http://localhost:5713/LogIn',{
@@ -71,9 +74,12 @@ function LandingPage(){
                         credentials:"include",
                         body:JSON.stringify(data)
      })
-      const res = await response.json();
+
+      const res = await response.json()
       if(response.ok){
+        console.log(res.message);
         setLogIn(false)
+        setTag(true)
         alert('LogIn successful')
       }else{
         alert('failed')
@@ -97,11 +103,27 @@ function LandingPage(){
         <div className="logo-container">
           <span className="logo-icon">🎓</span>
           <span className="logo-text">StudentForum</span>
+          {tag && (
+               <div className="nav-links2">
+          <button className="nav-btn active-nav" onClick={()=>navigate('/')}>
+            🏠 <span>Home</span>
+          </button>
+
+          <button className="nav-btn" onClick={()=>{navigate('/PubChat')}}>
+            💬 <span>Chat</span>
+          </button>
         </div>
+          )
+          }
+            </div>
+          {!tag && (
+      
         <div className="nav-actions">
           <button className="btn btn-outline-cyan" onClick={openLogIn}>Log In</button>
           <button className="btn btn-pink" onClick={openSignUp}>Sign Up</button>
         </div>
+          )
+}
       </header>
 
       {/* Hero Section */}

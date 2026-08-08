@@ -1,9 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const {SignUp ,LogIn} = require('../controller/Auth.js');
+const {mid} = require('../middleware/mid.js')
 
 router.post('/SignUp',SignUp);
-router.post('/LogIn' , LogIn)
+router.post('/LogIn' , LogIn);
+
+router.get('/PubChat' , mid,);
+
+
 
 module.exports = router;
+
 

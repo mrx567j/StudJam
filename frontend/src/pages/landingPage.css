@@ -235,3 +235,9 @@ body {
     width: 100%;
   }
 }
+
+.nav-links2 {
+  display: flex;
+  gap: 8px;
+  margin-left: 20px;
+}

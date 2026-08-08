@@ -30,7 +30,7 @@ exports.SignUp = async(req,res)=>{
             Avatar:avatar,
             User_name:username,
             email:email,
-            password:password,
+            password:hashedPassword,
             branch:branch,
             section:section
          })
@@ -70,7 +70,13 @@ exports.LogIn = async (req,res)=>{
                     expiresIn:'24h'
                 })
 
-                return res.cookie('token',token).json({
+                return res.cookie('token',token,{ 
+                     httpOnly:true, //prevents browser javascript to read cookie
+                     secure:false,  //Only send this cookie over an HTTPS connection.
+                     sameSite:"lax", // prevents cross site request forgery
+                     maxAge: 24 * 60 * 60 * 1000
+
+                }).json({
                     message:'LogIn Successful'
                 })
             }else{
