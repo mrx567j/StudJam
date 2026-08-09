@@ -173,13 +173,20 @@ button {
 .sidebar-title {
   padding: 22px 18px 12px;
 
+  
+
   color: #464652;
 
   font-size: 12px;
   font-weight: 700;
 
+ display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
   letter-spacing: 2px;
 }
+
 
 
 /* Rooms */
@@ -748,4 +755,102 @@ button {
 
     font-size: 13px;
   }
+}
+
+.plus-btn {
+  width: 25px;
+  height: 25px;
+  border: none;
+  border-radius: 5px;
+  background: #333;
+  color: white;
+  font-size: 20px;
+  line-height: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.plus-btn:hover {
+  background: #555;
+}
+
+.message-input-container {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+
+    height: 60px;
+    padding: 0 15px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    background: #120812;
+    border: 1px solid #71134f;
+    border-radius: 18px;
+
+    box-sizing: border-box;
+}
+
+.message-input-container {
+    width: 65%;
+    max-width: 900px;
+    height: 55px;
+
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 15px;
+    box-sizing: border-box;
+
+    background: #120812;
+    border: 1px solid #71134f;
+    border-radius: 16px;
+}
+
+.message-input::placeholder {
+    color: #8f858f;
+}
+
+.send-button {
+    width: 42px;
+    height: 42px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #8e1760;
+    color: white;
+
+    font-size: 20px;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: 0.2s;
+}
+
+.send-button:hover {
+    background: #a91d72;
+    transform: scale(1.05);
+}
+.message-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: white;
+    font-size: 15px;
+    padding: 0 12px;
 }

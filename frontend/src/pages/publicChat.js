@@ -1,7 +1,12 @@
 import React from "react";
 import {useNavigate} from 'react-router-dom';
 import { useState } from "react";
+import io from "socket.io-client"
 import './publicChat.css';
+
+const socket = io("http://localhost:5713");
+
+
 
 
 
@@ -105,9 +110,10 @@ function PubChat() {
         {/* ================= SIDEBAR ================= */}
         <aside className="sidebar">
 
-          <div className="sidebar-title">
-            ROOMS
-          </div>
+         <div className="sidebar-title">
+  <span>ROOMS</span>
+  <button className="plus-btn">+</button>
+</div>
 
           <div className="rooms-list">
             {rooms.map((room) => (
@@ -232,12 +238,17 @@ function PubChat() {
           </div>
 
 
-          {/* Login Message */}
-          <div className="login-message">
-            <span className="lock">🔒</span>
-            <span>Log in to chat with your classmates</span>
-          </div>
+         <div className="message-input-container">
+    <input
+        type="text"
+        placeholder="Type your message..."
+        className="message-input"
+    />
 
+    <button className="send-button">
+        ➤
+    </button>
+</div>
         </main>
 
       </div>
