@@ -191,15 +191,18 @@ button {
 
 /* Rooms */
 
+/* =========================
+   ROOMS
+========================= */
+
 .rooms-list {
   width: 100%;
 }
 
 .room {
   position: relative;
-
   padding: 17px 20px;
-
+  cursor: pointer;
   transition: 0.2s;
 }
 
@@ -251,7 +254,6 @@ button {
 
   font-size: 13px;
 }
-
 
 /* Online */
 

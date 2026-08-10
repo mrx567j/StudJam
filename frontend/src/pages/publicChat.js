@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {useNavigate} from 'react-router-dom';
 import { useState } from "react";
 import io from "socket.io-client"
 import './publicChat.css';
 
-const socket = io("http://localhost:5713");
+const socket = io("http://localhost:5713" ,{
+   withCredentials:true
+});
 
 
 
@@ -73,6 +75,38 @@ const messages = [
 ];
 
 function PubChat() {
+   const [message , setMessage] = useState("");
+   const [room , setRoom] = useState("general");
+
+    
+
+   useEffect(() => {
+    // Join the initially selected room
+    socket.emit("join_room", room);
+
+   return () => {
+    socket.emit("leave_room", room);
+  };
+  }, [room]);
+
+  const openRoom = (roomName) => {
+    setRoom(roomName);
+
+   
+  };
+
+  const sendMessage = async()=>{
+    console.log(message)
+         const data = {
+            roomName: room,
+            msg: message
+         }
+
+         socket.emit("send_message" , data);
+
+      
+
+  }
 
 
 
@@ -115,22 +149,18 @@ function PubChat() {
   <button className="plus-btn">+</button>
 </div>
 
-          <div className="rooms-list">
-            {rooms.map((room) => (
-              <div
-                key={room.name}
-                className={`room ${room.active ? "selected-room" : ""}`}
-              >
-                <div className="room-name">
-                  <span>#</span> {room.name}
-                </div>
+         <div className="rooms-list">
+    <button className="room selected-room"
+     onClick = {()=>{openRoom("general")}}>
+      <div className="room-name">
+        <span>#</span> general
+      </div>
 
-                <div className="room-description">
-                  {room.desc}
-                </div>
-              </div>
-            ))}
-          </div>
+      <div className="room-description">
+        Anything goes
+      </div>
+    </button>
+  </div>
 
 
           <div className="online-section">
@@ -243,9 +273,10 @@ function PubChat() {
         type="text"
         placeholder="Type your message..."
         className="message-input"
+        onChange={(e)=>{setMessage(e.target.value)}}
     />
 
-    <button className="send-button">
+    <button className="send-button" onClick={sendMessage}>
         ➤
     </button>
 </div>

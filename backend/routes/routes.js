@@ -7,7 +7,8 @@ router.post('/SignUp',SignUp);
 router.post('/LogIn' , LogIn);
 
 router.get('/PubChat' , mid,);
-
+router.get('/getMessages' , message)
+router.get('/getUsers' , Users);
 
 
 module.exports = router;
