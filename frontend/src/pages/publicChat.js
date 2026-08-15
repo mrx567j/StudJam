@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { use, useEffect } from "react";
 import {useNavigate} from 'react-router-dom';
 import { useState } from "react";
 import io from "socket.io-client"
@@ -6,6 +6,14 @@ import './publicChat.css';
 
 const socket = io("http://localhost:5713" ,{
    withCredentials:true
+});
+
+socket.on("connect", () => {
+    console.log("SOCKET CONNECTED:", socket.id);
+});
+
+socket.on("connect_error", (err) => {
+    console.log("SOCKET ERROR:", err.message);
 });
 
 
@@ -77,6 +85,41 @@ const messages = [
 function PubChat() {
    const [message , setMessage] = useState("");
    const [room , setRoom] = useState("general");
+   const [users , setUsers] = useState([]);
+   const [online_Users , setOnlineUsers] = useState([]);
+
+   useEffect(()=>{
+       socket.on("online_Users" , (users)=>{
+        console.log(users);
+        setOnlineUsers(users);
+       });
+
+       return()=>{
+        socket.off("online_users");
+       }
+     
+   },[])
+
+   useEffect(()=>{
+  const getusers = async()=>{
+    try{
+             const response = await fetch("http://localhost:5713/getUsers");
+
+             const data = await response.json();
+            
+             console.log(data.user);
+             setUsers(data.user);
+
+
+    }catch(error){
+             console.log(error);
+    } 
+     
+   }
+   getusers();
+  },[])
+
+  
 
     
 
@@ -107,6 +150,8 @@ function PubChat() {
       
 
   }
+
+  
 
 
 
@@ -170,16 +215,16 @@ function PubChat() {
             </div>
 
             <div className="users-list">
-              {users.map((user) => (
-                <div className="online-user" key={user.name}>
+              {online_Users.map((online_Users) => (
+                <div className="online-user" key={online_Users.User_name}>
 
                   <div className="user-avatar">
-                    {user.avatar}
+                    {online_Users.Avatar}
                     <span className="online-dot"></span>
                   </div>
 
-                  <span className={`username ${user.color}`}>
-                    {user.name}
+                  <span className={'username '}>
+                    {online_Users.User_name}
                   </span>
 
                 </div>
