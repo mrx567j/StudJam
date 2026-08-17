@@ -64,6 +64,7 @@ io.use((socket, next) => {  //Iused this middleware to get the real id of the pe
         );
 
         socket.userId = decoded.email;
+        
 
         next();
 
@@ -73,8 +74,10 @@ io.use((socket, next) => {  //Iused this middleware to get the real id of the pe
     }
 });
 
+
 io.on('connection' ,  (socket)=>{
      console.log(`User Connected ${socket.userId}` );
+   
       
      socket.on('join_room'  , async (roomName)=>{
               socket.join(roomName);
@@ -90,8 +93,12 @@ io.on('connection' ,  (socket)=>{
      socket.on('send_message' , async (data)=>{
         console.log(data);
         console.log(data.msg);
+          const us = await Use.findOne({email:socket.userId});
+          console.log(us);
           const t = await mesg.create({
               user_id:socket.userId,
+              user_name:us.User_name,
+              avatar:us.Avatar,
               room_name:data.roomName,
               message:data.msg
          })

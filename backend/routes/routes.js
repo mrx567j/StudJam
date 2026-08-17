@@ -9,7 +9,7 @@ router.post('/SignUp',SignUp);
 router.post('/LogIn' , LogIn);
 
 router.get('/PubChat' , mid,);
-router.get('/getMessages' , message)
+router.post('/getMessages' , message)
 router.get('/getUsers' , Users);
 
 

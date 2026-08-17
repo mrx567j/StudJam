@@ -4,6 +4,7 @@ import { useState } from "react";
 import io from "socket.io-client"
 import './publicChat.css';
 
+
 const socket = io("http://localhost:5713" ,{
    withCredentials:true
 });
@@ -87,11 +88,14 @@ function PubChat() {
    const [room , setRoom] = useState("general");
    const [users , setUsers] = useState([]);
    const [online_Users , setOnlineUsers] = useState([]);
+   const [prevMessage , setPrevMsg] = useState([]);
+   const [countOnline , setCount] = useState(0);
 
    useEffect(()=>{
        socket.on("online_Users" , (users)=>{
         console.log(users);
         setOnlineUsers(users);
+        setCount(online_Users.length);
        });
 
        return()=>{
@@ -146,11 +150,64 @@ function PubChat() {
          }
 
          socket.emit("send_message" , data);
-
+ setMessage("");
       
 
   }
 
+  useEffect(()=>{
+     const receiveMessage = async()=>{
+
+       const data = {room};
+       try{
+       const response = await fetch("http://localhost:5713/getMessages",{
+          method:'POST',
+                 headers:{'Content-Type' : 'application/json'},
+                 credentials:"include",
+                 body:JSON.stringify(data),
+       })
+       const res = await response.json();
+
+            console.log("ROOM:", room);
+            console.log("FULL RESPONSE:", res);
+            console.log("MESSAGES:", res.mesgi);
+
+       if(response.ok){
+        setPrevMsg(res.mesgi);
+       }else{
+        console.log(res.message);
+       }
+      }catch(error){
+        console.log(error);
+      }
+      }
+
+      receiveMessage();
+  },[room]
+    )
+
+
+  useEffect(()=>{
+
+     const handleMessage = (data)=>{
+setPrevMsg(prev=>[...prev,data]);
+     }
+     socket.on('receive_message',handleMessage)
+
+        return () => {
+        socket.off("receive_message", handleMessage);
+    };
+  },[])
+
+
+
+       
+
+     
+  
+
+
+  
   
 
 
@@ -211,7 +268,7 @@ function PubChat() {
           <div className="online-section">
 
             <div className="online-title">
-              ONLINE — 5
+              ONLINE — {countOnline}
             </div>
 
             <div className="users-list">
@@ -255,7 +312,7 @@ function PubChat() {
 
             <div className="online-count">
               <span className="green-dot"></span>
-              5 online
+              {countOnline} online
             </div>
 
           </div>
@@ -264,7 +321,7 @@ function PubChat() {
           {/* Messages */}
           <div className="messages-container">
 
-            {messages.map((message, index) => (
+            {prevMessage.map((message, index) => (
 
               <div className="message" key={index}>
 
@@ -276,18 +333,18 @@ function PubChat() {
 
                   <div className="message-meta">
                     <span className={`message-username username-${index}`}>
-                      {message.name}
+                      {message.user_name}
                     </span>
 
-                    <span className="message-time">
+                    {/* <span className="message-time">
                       {message.time}
-                    </span>
+                    </span> */}
                   </div>
 
                   <div className="message-bubble">
-                    {message.text}
+                    {message.message}
                   </div>
-
+{/* 
                   {message.reactions.length > 0 && (
                     <div className="reactions">
 
@@ -302,7 +359,7 @@ function PubChat() {
                       ))}
 
                     </div>
-                  )}
+                  )} */}
 
                 </div>
 
@@ -318,6 +375,7 @@ function PubChat() {
         type="text"
         placeholder="Type your message..."
         className="message-input"
+        value={message}
         onChange={(e)=>{setMessage(e.target.value)}}
     />
 

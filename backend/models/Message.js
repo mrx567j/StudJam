@@ -9,9 +9,18 @@ const messageSchema = new mongoose.Schema({
         type:String,
         required:true
       },
+      user_name:{
+        type:String,
+        required:true
+      },
+      avatar:{
+        type:String,
+        required:true
+      },
       message:{
         type:String,
-      }
+      },
+  
 })
 
 const mesg = mongoose.model('Messages',messageSchema);
