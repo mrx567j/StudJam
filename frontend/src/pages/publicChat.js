@@ -22,66 +22,7 @@ socket.on("connect_error", (err) => {
 
 
 
-const rooms = [
-  { name: "general", desc: "Anything goes", active: true },
-  { name: "math", desc: "Numbers hurt" },
-  { name: "cs-coding", desc: "Debug together" },
-  { name: "science", desc: "Lab reports 🧪" },
-  { name: "english", desc: "Essay gang" },
-  { name: "random", desc: "Memes & chaos" },
-];
 
-const users = [
-  { avatar: "👑", name: "algo_queen", color: "pink" },
-  { avatar: "🧑‍💻", name: "dev_dan", color: "cyan" },
-  { avatar: "👻", name: "math_ghost", color: "lime" },
-  { avatar: "🎵", name: "swiftie_stem", color: "purple" },
-  { avatar: "😂", name: "procrastination_king", color: "orange" },
-];
-
-const messages = [
-  {
-    avatar: "💻",
-    name: "math_ghost",
-    time: "2:16 PM",
-    text: "yeah that one. the trick is you gotta find det(A - λI) = 0 first and work from there",
-    reactions: [
-      { emoji: "🙋", count: 6 },
-      { emoji: "💡", count: 4 },
-    ],
-  },
-  {
-    avatar: "🥶",
-    name: "anxious_coder99",
-    time: "2:17 PM",
-    text: "WAIT that actually makes sense omg thank you",
-    reactions: [{ emoji: "🎉", count: 3 }],
-  },
-  {
-    avatar: "😂",
-    name: "procrastination_king",
-    time: "2:18 PM",
-    text: "no cap this channel saves my GPA every semester lmaooo",
-    reactions: [
-      { emoji: "😂", count: 2 },
-      { emoji: "💯", count: 7 },
-    ],
-  },
-  {
-    avatar: "🎵",
-    name: "swiftie_stem",
-    time: "2:20 PM",
-    text: "does anyone have the lecture slides from monday? i was sick",
-    reactions: [],
-  },
-  {
-    avatar: "🧑‍💻",
-    name: "dev_dan",
-    time: "2:21 PM",
-    text: "dm me I'll send them over 👍",
-    reactions: [{ emoji: "❤️", count: 4 }],
-  },
-];
 
 function PubChat() {
    const [message , setMessage] = useState("");
@@ -90,6 +31,45 @@ function PubChat() {
    const [online_Users , setOnlineUsers] = useState([]);
    const [prevMessage , setPrevMsg] = useState([]);
    const [countOnline , setCount] = useState(0);
+   const [currentUser , setCurrUser] = useState(null);
+
+   const navigate = useNavigate();
+
+   useEffect(()=>{
+    
+      const getCurrUser = async()=>{
+        console.log("call me")
+        try{
+        const l = await fetch("http://localhost:5713/me",{
+          credentials:"include"
+        });
+
+        
+
+      const data = await l.json();
+      localStorage.setItem("jis" , data.avatar);
+      localStorage.setItem("jis2" , data.id);
+      localStorage.setItem("jis3" , data.branch);
+      localStorage.setItem("jis4" , data.section);
+      localStorage.setItem("jis5" , data.username);
+
+      if(l.ok){
+        console.log(data);
+        setCurrUser(data);
+      }else{
+        alert("hehe")
+      }
+    }catch(error){
+      console.log(error);
+    }
+
+
+
+      }
+
+     getCurrUser();
+
+   },[])
 
    useEffect(()=>{
        socket.on("online_Users" , (users)=>{
@@ -218,6 +198,8 @@ setPrevMsg(prev=>[...prev,data]);
       {/* ================= NAVBAR ================= */}
       <header className="navbar">
 
+        
+
         <div className="brand">
           <span className="brand-logo">🎓</span>
           <span className="brand-name">StudentForum</span>
@@ -233,9 +215,14 @@ setPrevMsg(prev=>[...prev,data]);
           </button>
         </div>
 
+       
+
         <div className="auth-buttons">
-          <button className="login-btn">Log In</button>
-          <button className="signup-btn">Sign Up</button>
+          {/* <button className="login-btn">Log In</button>
+          <button className="signup-btn">Sign Up</button> */}
+           <div className="profile-icon" onClick={()=>{navigate('/Profile')}}>
+                 {currentUser?.avatar || "👤"}
+            </div>
         </div>
       </header>
 

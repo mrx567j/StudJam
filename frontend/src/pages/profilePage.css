@@ -1,0 +1,355 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #08080f;
+  color: #f2f2ff;
+  font-family: Arial, sans-serif;
+}
+
+
+/* =========================
+   PAGE
+========================= */
+
+.profile-page {
+  min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at 50% 20%,
+      rgba(255, 30, 110, 0.06),
+      transparent 35%
+    ),
+    #08080f;
+}
+
+
+/* =========================
+   NAVBAR
+========================= */
+
+.profile-navbar {
+  height: 74px;
+
+  border-bottom: 1px solid #1d1d27;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 48px;
+}
+
+
+.profile-logo {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  color: #ff2875;
+
+  font-size: 25px;
+  font-weight: 700;
+}
+
+
+.logout-btn {
+  padding: 11px 25px;
+
+  border-radius: 10px;
+
+  background: transparent;
+
+  color: #ff2875;
+
+  border: 1px solid #ff2875;
+
+  font-size: 15px;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+
+.logout-btn:hover {
+  background: #ff2875;
+  color: white;
+
+  box-shadow:
+    0 0 18px rgba(255, 40, 117, 0.3);
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+.profile-wrapper {
+  min-height: calc(100vh - 74px);
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  padding: 70px 20px;
+}
+
+
+/* =========================
+   PROFILE CARD
+========================= */
+
+.profile-card {
+  width: 600px;
+
+  padding: 45px;
+
+  border-radius: 18px;
+
+  border: 1px solid #292936;
+
+  background: #0d0d15;
+
+  text-align: center;
+
+  box-shadow:
+    0 0 40px rgba(255, 40, 117, 0.04);
+}
+
+
+/* =========================
+   AVATAR
+========================= */
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+
+  margin: 0 auto 22px;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 60px;
+
+  background: #211720;
+
+  border: 3px solid #ff2875;
+
+  box-shadow:
+    0 0 25px rgba(255, 40, 117, 0.3);
+}
+
+
+/* =========================
+   NAME
+========================= */
+
+.profile-card h1 {
+  font-size: 32px;
+
+  margin-bottom: 5px;
+}
+
+
+.username {
+  color: #89899b;
+
+  margin-bottom: 35px;
+}
+
+
+/* =========================
+   DETAILS
+========================= */
+
+.profile-details {
+  border-top: 1px solid #292936;
+
+  border-bottom: 1px solid #292936;
+
+  text-align: left;
+}
+
+
+.detail {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 17px 5px;
+
+  border-bottom: 1px solid #20202a;
+}
+
+
+.detail:last-child {
+  border-bottom: none;
+}
+
+
+.detail-label {
+  color: #858597;
+
+  font-size: 14px;
+}
+
+
+.detail-value {
+  color: #e2e2ef;
+
+  font-size: 15px;
+}
+
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+
+.profile-actions {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 12px;
+
+  margin-top: 30px;
+}
+
+
+.profile-actions button {
+  width: 100%;
+
+  padding: 14px;
+
+  border-radius: 10px;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+
+.edit-btn {
+  background: #ff2875;
+
+  border: 1px solid #ff2875;
+
+  color: white;
+
+  box-shadow:
+    0 0 18px rgba(255, 40, 117, 0.2);
+}
+
+
+.edit-btn:hover {
+  background: #ff4386;
+}
+
+
+.password-btn {
+  background: transparent;
+
+  border: 1px solid #353542;
+
+  color: #00e5ff;
+}
+
+
+.password-btn:hover {
+  border-color: #00e5ff;
+
+  background: rgba(0, 229, 255, 0.05);
+}
+
+
+.logout-card-btn {
+  background: transparent;
+
+  border: 1px solid #353542;
+
+  color: #ff2875;
+}
+
+
+.logout-card-btn:hover {
+  border-color: #ff2875;
+
+  background: rgba(255, 40, 117, 0.05);
+}
+
+
+/* =========================
+   HELP
+========================= */
+
+.help-btn {
+  position: fixed;
+
+  right: 20px;
+  bottom: 18px;
+
+  width: 42px;
+  height: 42px;
+
+  border-radius: 50%;
+
+  border: none;
+
+  background: white;
+
+  color: #111;
+
+  font-size: 20px;
+
+  cursor: pointer;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 650px) {
+
+  .profile-navbar {
+    padding: 0 20px;
+  }
+
+  .profile-logo {
+    font-size: 21px;
+  }
+
+  .profile-card {
+    width: 100%;
+
+    padding: 30px 20px;
+  }
+
+  .profile-wrapper {
+    padding: 40px 15px;
+  }
+
+  .detail {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 5px;
+  }
+
+}

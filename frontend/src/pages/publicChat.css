@@ -856,3 +856,26 @@ button {
     font-size: 15px;
     padding: 0 12px;
 }
+
+.profile-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #f1f5f9;
+  border: 2px solid #e2e8f0;
+
+  font-size: 21px;
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.profile-icon:hover {
+  background: #e2e8f0;
+  transform: scale(1.05);
+}
