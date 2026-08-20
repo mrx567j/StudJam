@@ -11,7 +11,7 @@ function App() {
     <Routes>
       <Route path="/" element={<LandingPage/>}/>
       <Route path="/PubChat" element={<PubChat/>}></Route>
-      <Route path="/Profile"  element={<Profile/>}/>
+      <Route path="/Profile/:id"  element={<Profile/>}/>
     </Routes> 
   );
 }

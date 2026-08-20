@@ -6,6 +6,7 @@ const {message} = require('../controller/Message.js');
 const {Users} =require("../controller/getUse.js");
 const {authi} = require("../middleware/authi.js")
 const {getMe} = require("../controller/getUse.js")
+const {getUserProfile} = require("../controller/getUserPr.js");
 
 router.post('/SignUp',SignUp);
 router.post('/LogIn' , LogIn);
@@ -25,6 +26,8 @@ router.post('/logout'  , (req,res)=>{
         message:"User logged out"
     })
 })
+
+router.post('/userProf' , getUserProfile);
 
 
 module.exports = router;

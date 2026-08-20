@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   User,
   MessageCircle,
@@ -26,13 +26,57 @@ import './profilePage.css'
 
 
 function Profile(){
-  const avatar = localStorage.getItem("jis");
-  const email = localStorage.getItem("jis2");
-  const branch = localStorage.getItem("jis3");
-  const section = localStorage.getItem("jis4");
-  const username = localStorage.getItem("jis5");
+  // const avatar = localStorage.getItem("jis");
+  // const email = localStorage.getItem("jis2");
+  // const branch = localStorage.getItem("jis3");
+  // const section = localStorage.getItem("jis4");
+  // const username = localStorage.getItem("jis5");
+  const [avatar , setAvatar] = useState("");
+  const[branch , setBranch] = useState("");
+  const[section ,setSection] = useState("");
+  const[username , setUsername] = useState("");
+  
+
+  const {id} =useParams();
+  const id2 = localStorage.getItem('jis2');
+
+const jik = id === id2;
+
+  console.log({id});
   console.log(avatar);
   const navigate = useNavigate();
+
+useEffect(()=>{ 
+  const getUserProf = async()=>{
+    
+     try{
+      const r = await fetch("http://localhost:5713/userProf" ,{
+                 method:'POST',
+                 headers:{'Content-Type' : 'application/json'},
+                 credentials:"include",
+                 body:JSON.stringify({id}),
+      })
+      const res = await r.json();
+      if(r.ok){
+        console.log(res);
+        setAvatar(res.fetchi.Avatar)
+        setBranch(res.fetchi.branch)
+        setSection(res.fetchi.section)
+        setUsername(res.fetchi.User_name)
+      }
+      
+
+    }catch(error){
+       console.log(error);
+    }
+ } 
+
+ getUserProf()
+},[id])
+
+
+
+
 
 
   const handleLogout =async()=>{
@@ -69,13 +113,15 @@ function Profile(){
         <div className="profile-logo">
           🎓 <span>StudentForum</span>
         </div>
-
+{jik && (
         <button
           className="logout-btn"
           
         >
           Logout
         </button>
+)
+}
 
       </nav>
 
@@ -91,8 +137,8 @@ function Profile(){
           </div>
 
 
-          {/* User Information */}
-          <h1>Mradul Tiwari</h1>
+          {/* User Information
+          <h1>Mradul Tiwari</h1> */}
 
           <p className="username">
          {username}
@@ -107,7 +153,7 @@ function Profile(){
               </span>
 
               <span className="detail-value">
-               {email}
+               {id}
               </span>
             </div>
 
@@ -155,9 +201,10 @@ function Profile(){
 
           </div>
 
-
-          {/* Actions */}
-          <div className="profile-actions">
+ {/* Actions */}
+{jik && 
+         
+          (<div className="profile-actions">
 
             <button
               className="edit-btn"
@@ -182,7 +229,8 @@ function Profile(){
               Logout
             </button>
 
-          </div>
+          </div>)
+  }
 
         </div>
 

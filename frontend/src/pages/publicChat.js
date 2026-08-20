@@ -71,11 +71,14 @@ function PubChat() {
 
    },[])
 
+   const currId = localStorage.getItem("jis2");
+
    useEffect(()=>{
        socket.on("online_Users" , (users)=>{
         console.log(users);
         setOnlineUsers(users);
-        setCount(online_Users.length);
+        setCount(users.length);
+        console.log(countOnline)
        });
 
        return()=>{
@@ -179,6 +182,10 @@ setPrevMsg(prev=>[...prev,data]);
     };
   },[])
 
+  const driveToOthers = async()=>{
+
+  }
+
 
 
        
@@ -220,7 +227,7 @@ setPrevMsg(prev=>[...prev,data]);
         <div className="auth-buttons">
           {/* <button className="login-btn">Log In</button>
           <button className="signup-btn">Sign Up</button> */}
-           <div className="profile-icon" onClick={()=>{navigate('/Profile')}}>
+           <div className="profile-icon" onClick={()=>{navigate(`/Profile/${currId}`)}}>
                  {currentUser?.avatar || "👤"}
             </div>
         </div>
@@ -262,7 +269,7 @@ setPrevMsg(prev=>[...prev,data]);
               {online_Users.map((online_Users) => (
                 <div className="online-user" key={online_Users.User_name}>
 
-                  <div className="user-avatar">
+                  <div className="user-avatar" >
                     {online_Users.Avatar}
                     <span className="online-dot"></span>
                   </div>
@@ -312,7 +319,7 @@ setPrevMsg(prev=>[...prev,data]);
 
               <div className="message" key={index}>
 
-                <div className="message-avatar">
+                <div className="message-avatar"   onClick = {()=>(navigate(`/Profile/${message.user_id}`))}>
                   {message.avatar}
                 </div>
 
