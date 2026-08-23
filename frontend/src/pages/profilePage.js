@@ -100,6 +100,32 @@ useEffect(()=>{
 
   }
 
+
+  const handleRecovery = async()=>{
+    console.log('sending otp')
+    try{
+       const response = await fetch("http://localhost:5713/sendOtp",{
+                 method:'POST',
+                 headers:{'Content-Type' : 'application/json'},
+                 credentials:"include",
+                 body:JSON.stringify({id})
+       })
+     const res = await response.json();
+
+
+       if(response.ok){
+        alert('Otp sent to your linked email')
+        navigate('/Recovery')
+       }else{
+          console.log(res.message);
+       } 
+
+
+    }
+  catch(error){
+  console.log(error)
+  }
+}
   
  
 
@@ -216,7 +242,7 @@ useEffect(()=>{
 
             <button
               className="password-btn"
-              
+              onClick={handleRecovery}
             >
               Change Password
             </button>

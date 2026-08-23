@@ -7,6 +7,7 @@ const {Users} =require("../controller/getUse.js");
 const {authi} = require("../middleware/authi.js")
 const {getMe} = require("../controller/getUse.js")
 const {getUserProfile} = require("../controller/getUserPr.js");
+const {verify , utility} = require("../controller/veri.js")
 
 router.post('/SignUp',SignUp);
 router.post('/LogIn' , LogIn);
@@ -28,6 +29,9 @@ router.post('/logout'  , (req,res)=>{
 })
 
 router.post('/userProf' , getUserProfile);
+
+
+router.post('/sendOtp' , utility)
 
 
 module.exports = router;

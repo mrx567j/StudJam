@@ -4,6 +4,7 @@ import LandingPage from './pages/landingPage'
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import PubChat from './pages/publicChat';
 import Profile from './pages/profilePage';
+import VerifOtp from './pages/verifOtp';
 
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
       <Route path="/" element={<LandingPage/>}/>
       <Route path="/PubChat" element={<PubChat/>}></Route>
       <Route path="/Profile/:id"  element={<Profile/>}/>
+      <Route path="/Recovery" element={<VerifOtp/>}/>
     </Routes> 
   );
 }
