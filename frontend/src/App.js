@@ -5,6 +5,7 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import PubChat from './pages/publicChat';
 import Profile from './pages/profilePage';
 import VerifOtp from './pages/verifOtp';
+import ChangePassword from './pages/changePass';
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
       <Route path="/PubChat" element={<PubChat/>}></Route>
       <Route path="/Profile/:id"  element={<Profile/>}/>
       <Route path="/Recovery" element={<VerifOtp/>}/>
+      <Route path="/Changepass" element={<ChangePassword/>}/>
     </Routes> 
   );
 }

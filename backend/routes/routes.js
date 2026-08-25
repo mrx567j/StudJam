@@ -7,13 +7,14 @@ const {Users} =require("../controller/getUse.js");
 const {authi} = require("../middleware/authi.js")
 const {getMe} = require("../controller/getUse.js")
 const {getUserProfile} = require("../controller/getUserPr.js");
-const {verify , utility} = require("../controller/veri.js")
+const {verify , utility , changePassword} = require("../controller/veri.js");
+
 
 router.post('/SignUp',SignUp);
 router.post('/LogIn' , LogIn);
 
 router.get('/PubChat' , mid,);
-router.post('/getMessages' , message)
+router.post('/getMessages' , message);
 router.get('/getUsers' , Users);
 router.get('/me' , authi , getMe);
 router.post('/logout'  , (req,res)=>{
@@ -31,8 +32,10 @@ router.post('/logout'  , (req,res)=>{
 router.post('/userProf' , getUserProfile);
 
 
-router.post('/sendOtp' , utility)
+router.post('/sendOtp' , utility);
 
+router.post('/Verif' , verify);
+router.post('/ChangePass' , changePassword);
 
 module.exports = router;
 

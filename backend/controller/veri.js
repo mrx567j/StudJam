@@ -3,6 +3,8 @@ const {Use} = require('../models/User.js');
 const { message } = require('./Message.js');
 const{sendEmail} = require('./OTP.js');
 const express = require('express');
+const crypto = require('crypto')
+const bcrypt = require('bcrypt');
 
 exports.utility = async(req,res) =>{
     console.log("arrived")
@@ -26,7 +28,7 @@ try{
             otp:otpi,
             expiresAt:expiresAt
        })
-       console.log(otpi,t);
+       console.log("otp sent" , otpi);
 
 
      
@@ -53,32 +55,52 @@ try{
 
 
 exports.verify = async(req,res)=>{
-    const otp = req.body.otp;
+    console.log("reached verification route");
+    const otpi = req.body.otp;
     const email = req.body.email;
 
 try{
-    const record = await otp.findOne({
-         where:email,
-         order:['generatedAt' , 'DESC']
-    
-    })
+    const record = await otp
+    .findOne({ email })
+    .sort({ generatedAT: -1 });
+    console.log("RECORD:", record);
 
     if(!record){
      return   res.status(404).json({message:"no otp"})
     }
 
     if(record.expiresAt< new Date()){
+        console.log("hi")
         return res.status(404).json({message:"OTP INVALID"})
     }
 if(record.attempts>=3){
     return res.status(400).json({message:"Too many attempts"})
 }
 
-    if(record.otp!=otp){
+    if(record.otp!=otpi){
         record.attempts +=1;
-        await record.save
+        await record.save();
         return res.status(404).json({message:''})
     }
+    
+ const resetToken = crypto.randomBytes(32).toString('hex');
+
+ record.resetToken = resetToken;
+record.resetTokenExpiry = new Date(Date.now() + 10 * 60 * 1000);
+
+await record.save();
+
+console.log("Reset token is " , resetToken);
+  res.cookie("resetToken" , resetToken ,{
+
+    httpOnly: true,
+    secure: false, // true in production with HTTPS
+    sameSite: "strict",
+    maxAge: 10 * 60 * 1000
+
+ })
+
+
 
     return res.status(200).json({
         message:"OTP verified"
@@ -90,6 +112,50 @@ if(record.attempts>=3){
     })
 }
 
+
+
+
+
+}
+
+
+exports.changePassword = async(req,res)=>{ 
+
+    console.log('reached chnge')
+ const email = req.body.email;
+ const pass =req.body.newPass;
+ const token = req.cookies.resetToken;
+try{
+ const rec = await Use.findOne({email:email});
+  const rec2 = await otp.findOne({email:email});
+
+  if(!rec2){
+    console.log('not found')
+  }
+ if(token!=rec2.resetToken){
+    return res.status(404).json({message:'reset token not available'})
+ }
+
+let newHash;
+ 
+try{
+ newHash = await bcrypt.hash(pass,10);
+}catch(error){
+    console.log(error);
+}
+
+rec.password = newHash;
+
+await rec.save();
+console.log('password changed');
+
+return res.status(200).json({
+    message:'password changes successfully'
+})
+
+}catch(error){
+  console.log(error);
+}
 
 
 

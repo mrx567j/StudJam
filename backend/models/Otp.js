@@ -6,7 +6,7 @@ const OtpSchema = new mongoose.Schema({
         required:true
       },
       otp:{
-        type:Number,
+        type:String,
         required:true
       },
       generatedAT:{
@@ -21,7 +21,17 @@ const OtpSchema = new mongoose.Schema({
     attempts:{
       type:Number,
       default:0
+    },
+
+    resetToken:{
+      type:String,
+    },
+
+    resetExpiry:{
+      type:Date 
     }
+
+  
         
       
 })
