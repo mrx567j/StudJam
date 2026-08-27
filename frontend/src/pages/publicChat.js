@@ -182,10 +182,10 @@ setPrevMsg(prev=>[...prev,data]);
     };
   },[])
 
-  const driveToOthers = async()=>{
+  
 
-  }
 
+  const t = localStorage.getItem('Tag');
 
 
        
@@ -213,7 +213,7 @@ setPrevMsg(prev=>[...prev,data]);
         </div>
 
         <div className="nav-links">
-          <button className="nav-btn">
+          <button className="nav-btn" onClick={()=>{navigate('/')}}>
             🏠 <span>Home</span>
           </button>
 

@@ -1,15 +1,35 @@
 import React from "react";
 import {useNavigate} from 'react-router-dom';
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import './landingPage.css'
 import './logIn.css'
 import './signUp.css'
 
 
-function LandingPage(){
+
+
+function LandingPage({tag , setTag}){
  const[isLogIn,setLogIn] = useState(false);
  const[isSignUp,setSignIn] = useState(false);
  const navigate = useNavigate();
+
+ useEffect(()=>{
+    const isSession = async()=>{
+       const response = await fetch('http://localhost:5713/isSession',{ 
+         credentials:'include'
+       })
+       const res = await response.json();
+
+       if(response.ok){
+         setTag(true)
+       }else{
+         console.log('session expired')
+         setTag(false)
+       }
+    }
+
+    isSession()
+ },[])
 
 
  const openLogIn = ()=>{
@@ -38,7 +58,7 @@ function LandingPage(){
  const [branch ,setBranch] = useState('');
  const [section , setSec] = useState('');
  const [password,setPass] = useState('');
- const [tag,setTag] = useState(false);
+ 
 
  const signUpApi = async(e)=>{
   e.preventDefault();
@@ -80,6 +100,7 @@ function LandingPage(){
         console.log(res.message);
         setLogIn(false)
         setTag(true)
+        // localStorage.setItem('Tag' , tag)
         alert('LogIn successful')
       }else{
         alert('failed')
@@ -90,6 +111,7 @@ function LandingPage(){
           
    }
  }
+
 
 
  
@@ -104,15 +126,20 @@ function LandingPage(){
           <span className="logo-icon">🎓</span>
           <span className="logo-text">StudentForum</span>
           {tag && (
+            
                <div className="nav-links2">
           <button className="nav-btn active-nav" onClick={()=>navigate('/')}>
             🏠 <span>Home</span>
           </button>
 
-          <button className="nav-btn" onClick={()=>{navigate('/PubChat')}}>
+          <button className="nav-btn" onClick={()=>{ navigate('/PubChat') }}>
             💬 <span>Chat</span>
           </button>
         </div>
+
+        
+        
+        
           )
           }
             </div>

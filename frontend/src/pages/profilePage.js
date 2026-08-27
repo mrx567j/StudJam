@@ -25,7 +25,7 @@ import {
 import './profilePage.css'
 
 
-function Profile(){
+function Profile({tag , setTag}){
   // const avatar = localStorage.getItem("jis");
   // const email = localStorage.getItem("jis2");
   // const branch = localStorage.getItem("jis3");
@@ -142,7 +142,9 @@ useEffect(()=>{
 {jik && (
         <button
           className="logout-btn"
-          
+          onClick={()=>{setTag(false) 
+                          navigate('/')
+                         }}
         >
           Logout
         </button>

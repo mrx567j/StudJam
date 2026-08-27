@@ -1,13 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const {SignUp ,LogIn} = require('../controller/Auth.js');
-const {mid} = require('../middleware/mid.js')
+const {mid} = require('../middleware/mid.js');
 const {message} = require('../controller/Message.js');
 const {Users} =require("../controller/getUse.js");
-const {authi} = require("../middleware/authi.js")
-const {getMe} = require("../controller/getUse.js")
+const {authi} = require("../middleware/authi.js");
+const {getMe} = require("../controller/getUse.js");
 const {getUserProfile} = require("../controller/getUserPr.js");
 const {verify , utility , changePassword} = require("../controller/veri.js");
+const {sess} = require('../controller/isSession.js');
+
+
+router.get('/isSession' ,sess);
 
 
 router.post('/SignUp',SignUp);
