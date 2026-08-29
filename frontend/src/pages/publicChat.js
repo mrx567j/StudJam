@@ -60,6 +60,7 @@ function PubChat() {
 
         socket.connect();
       }else{
+        console.log(l)
         alert("hehe")
       }
     }catch(error){
