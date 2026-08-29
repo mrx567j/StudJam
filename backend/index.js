@@ -13,7 +13,7 @@ const app = express();
 const router = require('./routes/routes.js');
 const server = http.createServer(app);
 const io = new Server(server ,{cors: {
-        origin: "http://localhost:3000",
+        origin: 'https://studjam.vercel.app',,
         credentials: true
     }});
 const PORT = process.env.PORT;
