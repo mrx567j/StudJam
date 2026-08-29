@@ -126,7 +126,7 @@ io.on('connection' ,  (socket)=>{
      })
 })
 
-dbConnect();
+
 
 app.use(cors({
      origin: 'https://stud-jam-theta.vercel.app', 
@@ -138,7 +138,23 @@ app.use(cookieParser());
 app.use('/',router);
 
 
+const startServer = async () => {
+    try {
+        await dbConnect();
 
-server.listen(PORT ,()=>{
-    console.log('Server started' , PORT);
-})
+        server.listen(PORT, () => {
+            console.log('Server started', PORT);
+        });
+    } catch (error) {
+        console.error('Failed to start server:', error);
+        process.exit(1);
+    }
+};
+
+startServer();
+
+
+
+// server.listen(PORT ,()=>{
+//     console.log('Server started' , PORT);
+// })
