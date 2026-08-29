@@ -24,7 +24,12 @@ const userSchema = new mongoose.Schema({
      section:{
         type:String,
         required:true
+     },
+     serverS:{
+        type:String,
+        enum:[""]
      }
+     
 })
 
 const Use = mongoose.model('Student',userSchema);
