@@ -73,7 +73,7 @@ exports.LogIn = async (req,res)=>{
                 return res.cookie('token',token,{ 
                      httpOnly:true, //prevents browser javascript to read cookie
                      secure:false,  //Only send this cookie over an HTTPS connection.
-                     sameSite:"lax", // prevents cross site request forgery
+                     sameSite:"none", // prevents cross site request forgery
                      maxAge: 24 * 60 * 60 * 1000
 
                 }).json({

@@ -10,9 +10,7 @@ const {getUserProfile} = require("../controller/getUserPr.js");
 const {verify , utility , changePassword} = require("../controller/veri.js");
 const {sess} = require('../controller/isSession.js');
 
-router.get("/" ,(req,res)=>{
-    res.send("hello guys")
-})
+
 
 router.get('/isSession' ,sess);
 
