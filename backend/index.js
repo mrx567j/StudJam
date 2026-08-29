@@ -13,7 +13,7 @@ const app = express();
 const router = require('./routes/routes.js');
 const server = http.createServer(app);
 const io = new Server(server ,{cors: {
-        origin: 'https://studjam.vercel.app',
+        origin: 'https://stud-jam-theta.vercel.app',
         credentials: true
     }});
 const PORT = process.env.PORT;
@@ -129,7 +129,7 @@ io.on('connection' ,  (socket)=>{
 dbConnect();
 
 app.use(cors({
-     origin: 'https://studjam.vercel.app', 
+     origin: 'https://stud-jam-theta.vercel.app', 
     credentials: true
 }))
 app.use(express.json());
