@@ -129,7 +129,7 @@ io.on('connection' ,  (socket)=>{
 dbConnect();
 
 app.use(cors({
-     origin: 'http://localhost:3000', 
+     origin: 'https://studjam.vercel.app', 
     credentials: true
 }))
 app.use(express.json());
