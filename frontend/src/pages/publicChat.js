@@ -5,7 +5,7 @@ import io from "socket.io-client"
 import './publicChat.css';
 
 
-const socket = io("http://localhost:5713" ,{
+const socket = io("https://studjam.onrender.com" ,{
    withCredentials:true
 });
 
@@ -40,7 +40,7 @@ function PubChat() {
       const getCurrUser = async()=>{
         console.log("call me")
         try{
-        const l = await fetch("http://localhost:5713/me",{
+        const l = await fetch("https://studjam.onrender.com/me",{
           credentials:"include"
         });
 
@@ -90,7 +90,7 @@ function PubChat() {
    useEffect(()=>{
   const getusers = async()=>{
     try{
-             const response = await fetch("http://localhost:5713/getUsers");
+             const response = await fetch("https://studjam.onrender.com/getUsers");
 
              const data = await response.json();
             
@@ -143,7 +143,7 @@ function PubChat() {
 
        const data = {room};
        try{
-       const response = await fetch("http://localhost:5713/getMessages",{
+       const response = await fetch("https://studjam.onrender.com/getMessages",{
           method:'POST',
                  headers:{'Content-Type' : 'application/json'},
                  credentials:"include",

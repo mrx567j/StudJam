@@ -15,7 +15,7 @@ function LandingPage({tag , setTag}){
 
  useEffect(()=>{
     const isSession = async()=>{
-       const response = await fetch('http://localhost:5713/isSession',{ 
+       const response = await fetch('https://studjam.onrender.com/isSession',{ 
          credentials:'include'
        })
        const res = await response.json();
@@ -65,7 +65,7 @@ function LandingPage({tag , setTag}){
      const data = {avatar,username,email,branch,section,password};
 
      try{
-     const response = await fetch('http://localhost:5713/SignUp',{
+     const response = await fetch('https://studjam.onrender.com/SignUp',{
                  method:'POST',
                  headers:{'Content-Type' : 'application/json'},
                  credentials:"include",
@@ -88,7 +88,7 @@ function LandingPage({tag , setTag}){
   e.preventDefault() //since form triggers normal browser behaviour thats why we used it 
    const data = {email,password}
    try{
-     const response = await fetch('http://localhost:5713/LogIn',{
+     const response = await fetch('https://studjam.onrender.com/LogIn',{
                         method:'POST',
                         headers:{'Content-Type' : 'application/json '},
                         credentials:"include",

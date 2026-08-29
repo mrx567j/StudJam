@@ -31,7 +31,7 @@ const handleChange= async (a,c)=>{
  const handleRecovery = async()=>{
     console.log('sending otp')
     try{
-       const response = await fetch("http://localhost:5713/sendOtp",{
+       const response = await fetch("https://studjam.onrender.com/sendOtp",{
                  method:'POST',
                  headers:{'Content-Type' : 'application/json'},
                  credentials:"include",
@@ -61,7 +61,7 @@ const handleChange= async (a,c)=>{
   };
 
   try{
-      const response = await fetch('http://localhost:5713/Verif',{
+      const response = await fetch('https://studjam.onrender.com/Verif',{
                  method:'POST',
                  headers:{'Content-Type' : 'application/json'},
                  credentials:"include",
