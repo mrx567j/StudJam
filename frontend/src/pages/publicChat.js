@@ -6,7 +6,8 @@ import './publicChat.css';
 
 
 const socket = io("https://studjam.onrender.com" ,{
-   withCredentials:true
+   withCredentials:true,
+     autoConnect: false
 });
 
 socket.on("connect", () => {
@@ -56,6 +57,8 @@ function PubChat() {
       if(l.ok){
         console.log(data);
         setCurrUser(data);
+
+        socket.connect();
       }else{
         alert("hehe")
       }
