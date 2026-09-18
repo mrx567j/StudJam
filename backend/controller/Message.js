@@ -1,10 +1,13 @@
 const express = require('express');
-const {mesg} = require('../models/Message')
+const {mesg} = require('../models/Message');
+const{channel} = require('../models/Channel');
 
 exports.message = async(req,res) =>{
+    console.log("giving message")
     try{   
-        const {room} = req.body;
-        const fetchi = await mesg.find({room_name: room});
+        const {c} = req.body;
+        const findi = await channel.findOne({name:c});
+        const fetchi = await mesg.find({room_name: findi._id});
 
         if(!fetchi){
             return res.status(404).json({

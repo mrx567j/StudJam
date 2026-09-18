@@ -6,6 +6,7 @@ const {Use} = require('../models/User');
 
 exports.Users = async(req,res) =>{
     try{
+         const {serverName,c} = req.body;
          const user = await Use.find();
 
          if(!user){
@@ -29,15 +30,15 @@ exports.Users = async(req,res) =>{
 }
 
 exports.getMe = async(req,res)=>{
-     
+     console.log("kanye")
      const em = req.user.email;
     
      try{
         const me = await Use.findOne({email:em});
 
         if(!me){
-            return res.status(404).json({
-                message:"User not found"
+            return res.status(409).json({
+                message:"User not found2"
             })
         }
          console.log(me)

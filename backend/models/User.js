@@ -25,10 +25,7 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true
      },
-     serverS:{
-        type:String,
-        enum:[""]
-     }
+     
      
 })
 

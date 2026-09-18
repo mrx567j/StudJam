@@ -8,12 +8,14 @@ const cors = require('cors');
 require('dotenv').config();
 const {Use} = require("./models/User.js");
 const{mesg} = require('./models/Message.js') // importedd model where i will store my messages
+const {server} = require('./models/Server.js')
+const {channel} = require('./models/Channel.js')
 
 const app = express();
 const router = require('./routes/routes.js');
-const server = http.createServer(app);
-const io = new Server(server ,{cors: {
-        origin: 'https://stud-jam-theta.vercel.app',
+const Server2 = http.createServer(app);
+const io = new Server(Server2 ,{cors: {
+        origin: 'http://localhost:3000',
         credentials: true
     }});
 const PORT = process.env.PORT;
@@ -77,14 +79,14 @@ io.use((socket, next) => {  //Iused this middleware to get the real id of the pe
 
 io.on('connection' ,  (socket)=>{
      console.log(`User Connected ${socket.userId}` );
-   
+     
       
      socket.on('join_room'  , async (roomName)=>{
               socket.join(roomName);
               console.log(`user joined room ${roomName}`);
               socket.roomName = roomName;
 
-              await sendOnlineUsers(roomName)
+              await sendOnlineUsers(roomName);
               
      })
 
@@ -93,13 +95,19 @@ io.on('connection' ,  (socket)=>{
      socket.on('send_message' , async (data)=>{
         console.log(data);
         console.log(data.msg);
+      console.log("ROOM FROM CLIENT:", data.roomName);
+        console.log(data.server_name);
           const us = await Use.findOne({email:socket.userId});
+          const findi = await server.findOne({name:data.server_name});
+          const findi2 = await channel.findOne({name:data.roomName});
           console.log(us);
+          console.log(findi2);
           const t = await mesg.create({
               user_id:socket.userId,
               user_name:us.User_name,
               avatar:us.Avatar,
-              room_name:data.roomName,
+              server_name:findi._id,
+              room_name:findi2._id,
               message:data.msg
          })
          io.to(data.roomName).emit('receive_message' ,t);
@@ -129,7 +137,7 @@ io.on('connection' ,  (socket)=>{
 
 
 app.use(cors({
-     origin: 'https://stud-jam-theta.vercel.app', 
+    origin: 'http://localhost:3000', 
     credentials: true
 }))
 app.use(express.json());
@@ -137,24 +145,26 @@ app.use(cookieParser());
 
 app.use('/',router);
 
+dbConnect();
 
-const startServer = async () => {
-    try {
-        await dbConnect();
+// const startServer = async () => {
+//     try {
+//         await dbConnect();
 
-        server.listen(PORT, () => {
-            console.log('Server started', PORT);
-        });
-    } catch (error) {
-        console.error('Failed to start server:', error);
-        process.exit(1);
-    }
-};
+//         server.listen(PORT, () => {
+//             console.log('Server started', PORT);
+//         });
+//     } catch (error) {
+//         console.error('Failed to start server:', error);
+//         process.exit(1);
+//     }
+// };
 
-startServer();
+// startServer();
 
 
 
-// server.listen(PORT ,()=>{
-//     console.log('Server started' , PORT);
-// })
+Server2.listen(PORT ,()=>{
+    console.log('Server started' , PORT);
+})
+

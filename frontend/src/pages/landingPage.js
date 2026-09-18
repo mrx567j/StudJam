@@ -15,7 +15,7 @@ function LandingPage({tag , setTag}){
 
  useEffect(()=>{
     const isSession = async()=>{
-       const response = await fetch('https://studjam.onrender.com/isSession',{ 
+       const response = await fetch('http://localhost:5713/isSession',{ 
          credentials:'include'
        })
        const res = await response.json();
@@ -65,7 +65,7 @@ function LandingPage({tag , setTag}){
      const data = {avatar,username,email,branch,section,password};
 
      try{
-     const response = await fetch('https://studjam.onrender.com/SignUp',{
+     const response = await fetch('http://localhost:5713/SignUp',{
                  method:'POST',
                  headers:{'Content-Type' : 'application/json'},
                  credentials:"include",
@@ -88,7 +88,7 @@ function LandingPage({tag , setTag}){
   e.preventDefault() //since form triggers normal browser behaviour thats why we used it 
    const data = {email,password}
    try{
-     const response = await fetch('https://studjam.onrender.com/LogIn',{
+     const response = await fetch('http://localhost:5713/LogIn',{
                         method:'POST',
                         headers:{'Content-Type' : 'application/json '},
                         credentials:"include",
@@ -102,6 +102,8 @@ function LandingPage({tag , setTag}){
         setTag(true)
         // localStorage.setItem('Tag' , tag)
         alert('LogIn successful')
+
+        navigate('/2page');
       }else{
         alert('failed')
       }
@@ -125,15 +127,15 @@ function LandingPage({tag , setTag}){
         <div className="logo-container">
           <span className="logo-icon">🎓</span>
           <span className="logo-text">StudentForum</span>
-          {tag && (
+          {/* {tag && (
             
                <div className="nav-links2">
           <button className="nav-btn active-nav" onClick={()=>navigate('/')}>
             🏠 <span>Home</span>
           </button>
 
-          <button className="nav-btn" onClick={()=>{ navigate('/PubChat') }}>
-            💬 <span>Chat</span>
+          <button className="nav-btn" onClick={()=>{ navigate('/2Page') }}>
+             <span>Dashboard</span>
           </button>
         </div>
 
@@ -141,7 +143,7 @@ function LandingPage({tag , setTag}){
         
         
           )
-          }
+          } */}
             </div>
           {!tag && (
       

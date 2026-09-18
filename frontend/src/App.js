@@ -6,6 +6,7 @@ import PubChat from './pages/publicChat';
 import Profile from './pages/profilePage';
 import VerifOtp from './pages/verifOtp';
 import ChangePassword from './pages/changePass';
+import Servers from './pages/2Page';
 import { useState } from 'react';
 
 
@@ -17,10 +18,11 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<LandingPage tag={tag} setTag={setTag}/>}/>
-      <Route path="/PubChat" element={<PubChat/>}></Route>
+      <Route path="/PubChat/:serverName" element={<PubChat/>}></Route>
       <Route path="/Profile/:id"  element={<Profile tag={tag} setTag={setTag}/>}/>
       <Route path="/Recovery" element={<VerifOtp/>}/>
       <Route path="/Changepass" element={<ChangePassword/>}/>
+      <Route path="/2page" element = {<Servers/>}/>
     </Routes> 
   );
 }

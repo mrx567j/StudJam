@@ -9,6 +9,11 @@ const {getMe} = require("../controller/getUse.js");
 const {getUserProfile} = require("../controller/getUserPr.js");
 const {verify , utility , changePassword} = require("../controller/veri.js");
 const {sess} = require('../controller/isSession.js');
+const {createServer ,sendServerList ,getServerMembers,searchServ} = require('../controller/createServ.js');
+
+const{createChannel,getChannel}=require('../controller/createChannel.js');
+
+
 
 
 
@@ -20,7 +25,7 @@ router.post('/LogIn' , LogIn);
 
 router.get('/PubChat' , mid,);
 router.post('/getMessages' , message);
-router.get('/getUsers' , Users);
+router.post('/getUsers' , Users);
 router.get('/me' , authi , getMe);
 router.post('/logout'  , (req,res)=>{
      res.clearCookie('token',{ 
@@ -41,6 +46,22 @@ router.post('/sendOtp' , utility);
 
 router.post('/Verif' , verify);
 router.post('/ChangePass' , changePassword);
+
+
+//for servers
+router.post('/createServer' , createServer);
+router.get('/serverList' , sendServerList);
+
+
+//for channels
+router.post('/crtChan' ,createChannel);
+router.post('/getChannel',getChannel);
+
+//getServerMembers
+router.post('/serverMembers' , getServerMembers);
+
+//to search servers
+router.post('/searchServer' , searchServ);
 
 module.exports = router;
 

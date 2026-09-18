@@ -50,7 +50,7 @@ useEffect(()=>{
   const getUserProf = async()=>{
     
      try{
-      const r = await fetch("https://studjam.onrender.com/userProf" ,{
+      const r = await fetch("http://localhost:5713/userProf" ,{
                  method:'POST',
                  headers:{'Content-Type' : 'application/json'},
                  credentials:"include",
@@ -79,9 +79,10 @@ useEffect(()=>{
 
 
 
-  const handleLogout =async()=>{
+  const handleLogout =async(e)=>{
+      e.preventDefault();
     try{
-      const r  = await fetch("https://studjam.onrender.com/logout" , {
+      const r  = await fetch("http://localhost:5713/logout" , {
         method:"POST",
         credentials:"include"
       })
@@ -89,6 +90,7 @@ useEffect(()=>{
       const d = await r.json();
       if(r.ok){
         alert("successfully logged out")
+        setTag(false);
         navigate('/');
       }
 
@@ -104,7 +106,7 @@ useEffect(()=>{
   const handleRecovery = async()=>{
     console.log('sending otp')
     try{
-       const response = await fetch("https://studjam.onrender.com/sendOtp",{
+       const response = await fetch("http://localhost:5713/sendOtp",{
                  method:'POST',
                  headers:{'Content-Type' : 'application/json'},
                  credentials:"include",

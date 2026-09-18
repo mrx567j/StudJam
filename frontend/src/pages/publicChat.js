@@ -1,13 +1,14 @@
 import React, { use, useEffect } from "react";
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import { useState } from "react";
-import io from "socket.io-client"
+import io from "socket.io-client";
 import './publicChat.css';
 
 
-const socket = io("https://studjam.onrender.com" ,{
+
+const socket = io("http://localhost:5713" ,{
    withCredentials:true,
-     autoConnect: false
+    
 });
 
 socket.on("connect", () => {
@@ -27,12 +28,20 @@ socket.on("connect_error", (err) => {
 
 function PubChat() {
    const [message , setMessage] = useState("");
-   const [room , setRoom] = useState("general");
+   const [room , setRoom] = useState("");
    const [users , setUsers] = useState([]);
    const [online_Users , setOnlineUsers] = useState([]);
    const [prevMessage , setPrevMsg] = useState([]);
    const [countOnline , setCount] = useState(0);
    const [currentUser , setCurrUser] = useState(null);
+
+   
+const [op ,setOp] = useState(false);
+const [name , setName] = useState("");
+const {serverName} = useParams();
+const[channels , setChan] = useState([]);
+const [members ,setMem] = useState([]);
+const [c , setC] = useState("");
 
    const navigate = useNavigate();
 
@@ -41,7 +50,7 @@ function PubChat() {
       const getCurrUser = async()=>{
         console.log("call me")
         try{
-        const l = await fetch("https://studjam.onrender.com/me",{
+        const l = await fetch("http://localhost:5713/me",{
           credentials:"include"
         });
 
@@ -60,8 +69,8 @@ function PubChat() {
 
         socket.connect();
       }else{
-        console.log(l)
-        alert("hehe")
+        
+        console.log(data.message)
       }
     }catch(error){
       console.log(error);
@@ -89,26 +98,34 @@ function PubChat() {
         socket.off("online_users");
        }
      
-   },[])
+   },[c])
 
-   useEffect(()=>{
-  const getusers = async()=>{
-    try{
-             const response = await fetch("https://studjam.onrender.com/getUsers");
+   //useEffect(()=>{
+  // const getusers = async()=>{
+  //    const data={serverName,c};
+  //   try{
+  //            const response = await fetch("http://localhost:5713/getUsers",
+  //             {
+  //               method:'POST',
+  //               headers:{'Content-Type' : 'application/json'},
+  //               credentials:"include",
+  //               body:JSON.stringify(data),
+  //             }
+  //            );
 
-             const data = await response.json();
+  //            const data = await response.json();
             
-             console.log(data.user);
-             setUsers(data.user);
+  //            console.log(data.user);
+  //            setUsers(data.user);
 
 
-    }catch(error){
-             console.log(error);
-    } 
+  //   }catch(error){
+  //            console.log(error);
+  //   } 
      
-   }
-   getusers();
-  },[])
+  //  }
+  //  getusers();
+  // },[])
 
   
 
@@ -116,23 +133,22 @@ function PubChat() {
 
    useEffect(() => {
     // Join the initially selected room
-    socket.emit("join_room", room);
+    socket.emit("join_room", c);
 
    return () => {
-    socket.emit("leave_room", room);
+    socket.emit("leave_room", c);
   };
-  }, [room]);
+  }, [c]);
 
-  const openRoom = (roomName) => {
-    setRoom(roomName);
-
-   
-  };
+ 
 
   const sendMessage = async()=>{
-    console.log(message)
+    console.log(message);
+    console.log("goo" ,c)
          const data = {
-            roomName: room,
+            server_name:serverName,
+            roomName: c,
+              
             msg: message
          }
 
@@ -145,9 +161,9 @@ function PubChat() {
   useEffect(()=>{
      const receiveMessage = async()=>{
 
-       const data = {room};
+       const data = {c};
        try{
-       const response = await fetch("https://studjam.onrender.com/getMessages",{
+       const response = await fetch("http://localhost:5713/getMessages",{
           method:'POST',
                  headers:{'Content-Type' : 'application/json'},
                  credentials:"include",
@@ -155,7 +171,7 @@ function PubChat() {
        })
        const res = await response.json();
 
-            console.log("ROOM:", room);
+            console.log("ROOM:", c);
             console.log("FULL RESPONSE:", res);
             console.log("MESSAGES:", res.mesgi);
 
@@ -170,7 +186,7 @@ function PubChat() {
       }
 
       receiveMessage();
-  },[room]
+  },[c]
     )
 
 
@@ -189,9 +205,97 @@ setPrevMsg(prev=>[...prev,data]);
   
 
 
-  const t = localStorage.getItem('Tag');
+//   const t = localStorage.getItem('Tag');
 
 
+useEffect(()=>{
+const getChannels = async()=>{
+    const data = {serverName};
+
+    try{
+      const response = await fetch("http://localhost:5713/getChannel",{
+                  method:'POST',
+                  headers:{'Content-Type' : 'application/json'},
+                  credentials:"include",
+                  body:JSON.stringify(data),
+      });
+      
+      const res = await response.json();
+
+      if(response.ok){
+          console.log(res.ar);
+          setChan(res.ar);
+      }else{
+         console.log(res.message)
+      }
+
+    }catch(error){
+      console.log(error)
+    }
+  
+}
+
+getChannels();
+
+},[])
+
+
+const createChannel = async(e)=>{
+  e.preventDefault();
+        const data = {name,serverName};
+
+    try{
+      const response = await fetch("http://localhost:5713/crtChan" ,{
+                  method:'POST',
+                  headers:{'Content-Type' : 'application/json'},
+                  credentials:"include",
+                  body:JSON.stringify(data),
+      })
+      
+      const res = await response.json();
+
+      if(response.ok){
+          alert("server created")
+      }else{
+         console.log(res.message)
+      }
+
+    }catch(error){
+      console.log(error)
+    }
+}
+
+useEffect(()=>{
+ const getMembers = async()=>{
+      const data = {serverName};
+
+          try{
+
+            const response = await fetch("http://localhost:5713/serverMembers" , {
+                  method:'POST',
+                  headers:{'Content-Type' : 'application/json'},
+                  credentials:"include",
+                  body:JSON.stringify(data),
+            })
+
+            const res = await response.json();
+
+            if(response.ok){
+                console.log(res.ar);
+                setMem(res.ar);
+            }else{
+              console.log(res.message);
+ 
+            }
+
+          }catch(error){
+            console.log(error);
+          }
+ }
+
+ getMembers();
+
+},[])
        
 
      
@@ -217,7 +321,7 @@ setPrevMsg(prev=>[...prev,data]);
         </div>
 
         <div className="nav-links">
-          <button className="nav-btn" onClick={()=>{navigate('/')}}>
+          <button className="nav-btn" onClick={()=>{navigate('/2page')}}>
             🏠 <span>Home</span>
           </button>
 
@@ -237,6 +341,10 @@ setPrevMsg(prev=>[...prev,data]);
         </div>
       </header>
 
+ 
+
+
+
 
       {/* ================= MAIN ================= */}
       <div className="chat-layout">
@@ -246,27 +354,35 @@ setPrevMsg(prev=>[...prev,data]);
 
          <div className="sidebar-title">
   <span>ROOMS</span>
-  <button className="plus-btn">+</button>
+  <button className="plus-btn" onClick={()=>{setOp(true)}}>+</button>
 </div>
-
-         <div className="rooms-list">
-    <button className="room selected-room"
-     onClick = {()=>{openRoom("general")}}>
+   <div className="rooms-list">
+ { channels.map((chan)=>(
+      
+    <button className="room selected-room" key = {chan._id} onClick = {()=>{setC(chan.name)}}
+    >
       <div className="room-name">
-        <span>#</span> general
+        <span>#</span> {chan.name}
       </div>
 
       <div className="room-description">
         Anything goes
       </div>
     </button>
-  </div>
+  
+))
+
+}
+
+</div>
+
+
 
 
           <div className="online-section">
 
             <div className="online-title">
-              ONLINE — {countOnline}
+              ONLINE —{countOnline}
             </div>
 
             <div className="users-list">
@@ -289,9 +405,71 @@ setPrevMsg(prev=>[...prev,data]);
               Server Members-{}
             </div>
 
+            
+            <div className="users-list">
+               {members.map((x) => (
+                <div className="online-user" key={x._id}>
+
+                  <div className="user-avatar" >
+                    {x.Avatar}
+                    <span className="online-dot"></span>
+                  </div>
+
+                  <span className={'username'}>
+                    {x.User_name}
+                  </span>
+
+                </div>
+              ))} 
+            </div>
+
           </div>
 
         </aside>
+
+             {op && (<div className="overlay" onClick={()=>{setOp(false)}}>
+
+  
+
+    
+
+    
+
+    {/* Form */}
+
+    <form className="server-form" onSubmit={createChannel} onClick={(e)=>{e.stopPropagation()}}>
+    
+
+      <input
+        
+        name='Name'
+        placeholder="Name of the channel"
+        value={name}
+        onChange={(e)=>{setName(e.target.value)}}  
+      />
+
+      
+
+      
+
+     
+
+      <button
+        type="submit"
+        className="server-btn"
+        
+      >
+        Create Channel
+      </button>
+
+    </form>
+    
+     
+
+
+  
+
+  </div>)}
 
 
         {/* ================= CHAT AREA ================= */}
@@ -302,7 +480,7 @@ setPrevMsg(prev=>[...prev,data]);
 
             <div className="channel-info">
               <span className="hash">#</span>
-              <span className="channel-name">general</span>
+              <span className="channel-name">{c}</span>
 
               <span className="separator">—</span>
 
@@ -319,7 +497,7 @@ setPrevMsg(prev=>[...prev,data]);
           </div>
 
 
-          {/* Messages */}
+          
           <div className="messages-container">
 
             {prevMessage.map((message, index) => (
@@ -345,8 +523,8 @@ setPrevMsg(prev=>[...prev,data]);
                   <div className="message-bubble">
                     {message.message}
                   </div>
-{/* 
-                  {message.reactions.length > 0 && (
+
+                  {/* {message.reactions.length > 0 && (
                     <div className="reactions">
 
                       {message.reactions.map((reaction, reactionIndex) => (
@@ -360,7 +538,7 @@ setPrevMsg(prev=>[...prev,data]);
                       ))}
 
                     </div>
-                  )} */}
+                  )}  */}
 
                 </div>
 
@@ -368,7 +546,7 @@ setPrevMsg(prev=>[...prev,data]);
 
             ))}
 
-          </div>
+          </div> 
 
 
          <div className="message-input-container">

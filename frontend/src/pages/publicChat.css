@@ -196,13 +196,20 @@ button {
 ========================= */
 
 .rooms-list {
+  display: flex;
+  flex-direction: column;
   width: 100%;
+  gap: 8px;
 }
 
 .room {
-  position: relative;
+   position: relative;
+  display: block;
+  width: 100%;
   padding: 17px 20px;
+  border: none;
   cursor: pointer;
+  text-align: left;
   transition: 0.2s;
 }
 
@@ -343,17 +350,20 @@ button {
 ========================= */
 
 .chat-area {
-  flex: 1;
-
+   flex: 1;
   min-width: 0;
 
   position: relative;
 
   display: flex;
   flex-direction: column;
+  height: calc(100vh - 74px);
+  justify-content: flex-start;
+  align-items: stretch;
 
   background: #07070e;
 }
+
 
 
 /* =========================
@@ -361,14 +371,24 @@ button {
 ========================= */
 
 .chat-header {
+ width: 100%;
   height: 68px;
+  flex-shrink: 0;
 
   display: flex;
   align-items: center;
+  justify-content: space-between;
 
   padding: 0 32px;
+  margin: 0;
 
   border-bottom: 1px solid #14141c;
+
+  
+  top: 0;
+  left: 0;
+
+  z-index: 10;
 }
 
 .channel-info {
@@ -434,9 +454,10 @@ button {
 ========================= */
 
 .messages-container {
-  flex: 1;
+ flex: 1;
+  min-height: 0;
 
-  padding: 24px 32px;
+  padding: 24px 32px 90px 32px;
 
   overflow-y: auto;
 }
@@ -779,44 +800,23 @@ button {
 }
 
 .message-input-container {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    right: 20px;
+  width: 65%;
+  max-width: 900px;
+  height: 55px;
 
-    height: 60px;
-    padding: 0 15px;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
 
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
 
-    background: #120812;
-    border: 1px solid #71134f;
-    border-radius: 18px;
+  padding: 0 15px;
 
-    box-sizing: border-box;
-}
-
-.message-input-container {
-    width: 65%;
-    max-width: 900px;
-    height: 55px;
-
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-
-    display: flex;
-    align-items: center;
-
-    padding: 0 15px;
-    box-sizing: border-box;
-
-    background: #120812;
-    border: 1px solid #71134f;
-    border-radius: 16px;
+  background: #120812;
+  border: 1px solid #71134f;
+  border-radius: 16px;
 }
 
 .message-input::placeholder {
