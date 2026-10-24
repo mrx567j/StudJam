@@ -5,6 +5,8 @@ import './landingPage.css'
 import './logIn.css'
 import './signUp.css'
 
+//For any event there are default behaviours of browsers like to reload after form submission to prevent it we use preventDefault() 
+//function
 
 
 
@@ -12,6 +14,10 @@ function LandingPage({tag , setTag}){
  const[isLogIn,setLogIn] = useState(false);
  const[isSignUp,setSignIn] = useState(false);
  const navigate = useNavigate();
+ 
+//tag is a boolean which is here in case a user has any session on this page he will not be shown buttons like logIn and SignUp in home page 
+//which avoids making my website look naive 
+//similarily isLogIn and isSignIn are also bool tags to display signup and signIn overlay
 
  useEffect(()=>{
     const isSession = async()=>{
@@ -145,6 +151,21 @@ function LandingPage({tag , setTag}){
           )
           } */}
             </div>
+
+      
+            {
+              tag && (
+        <div className="nav-actions">
+          <button className="btn btn-outline-cyan" onClick={()=>{navigate('/2page')}}>Home</button>
+           <button className="logout-btn" >Logout</button>
+        </div>
+          )
+            }
+        
+          
+       
+          
+        
           {!tag && (
       
         <div className="nav-actions">
@@ -152,7 +173,7 @@ function LandingPage({tag , setTag}){
           <button className="btn btn-pink" onClick={openSignUp}>Sign Up</button>
         </div>
           )
-}
+        }
       </header>
 
       {/* Hero Section */}
@@ -323,7 +344,7 @@ isSignUp && (
 
       <button
         type="submit"
-        className="signup-btn" onClick={signUpApi}
+        className="signup-btn" onClick={signUpApi}  //upon clicking this button react passes event object e to this function 
       >
         Create Account 🚀
       </button>
