@@ -74,7 +74,7 @@ exports.LogIn = async (req,res)=>{
             }
             if(await bcrypt.compare(password,find.password)){
                 let token = await JWT.sign(payload,process.env.JWT_SECRET,{  //It adds JWT signature which tells the server during auth that this token was send by this server
-                    expiresIn:'24h'
+                    expiresIn:'12h'
                 })
                
                 //We generally send token inside a cookie which gets stored at browser and automatically attaches to request to server so we can get token at server securily

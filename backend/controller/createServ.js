@@ -11,21 +11,21 @@ exports.createServer = async(req,res)=>{
     const {Name,Desc} = req.body;
     const token = req.cookies.token;
 
-    const decoded = Jwt.verify(token,process.env.JWT_SECRET)
+    const decoded = Jwt.verify(token,process.env.JWT_SECRET) // here we decoded the payload from token since it has been in encrypted form
 
     const emai = decoded.email;
 
     const findi1 = await server.findOne({name:Name});
     
-    const findi2 = await Use.findOne({email:emai});
-    const creatorId = findi2._id;
+    const findi2 = await Use.findOne({email:emai}); //since we have referenced user collection we have to provide
+    const creatorId = findi2._id;                   // the document id for that user with help of it we can populate it 
 
     if(findi1){
         return res.status(404).json({
             message:'server with similar name exists'
         })
     }
-
+  // created server collection 
     const crea = await server.create({
          name :Name,
          description:Desc,
@@ -114,7 +114,7 @@ exports.searchServ = async(req,res)=>{
 
   const findi1 = await Use.findOne({email:decoded.email});
 
-  const findi = await server.find({
+  const findi = await server.find({ //here i have used mongoDb query operators to find servers which user hasn't joined 
    
      name:{
         $regex:search ||"",

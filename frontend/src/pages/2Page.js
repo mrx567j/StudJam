@@ -7,48 +7,48 @@ function Servers() {
 
   const navigate = useNavigate();
 
-  const servers = [
-    {
-      id: 1,
-      name: "General Discussion",
-      description: "Talk about anything — school, life, memes and more.",
-      members: "2.4k",
-      icon: "🎓"
-    },
-    {
-      id: 2,
-      name: "Study & Academics",
-      description: "Share notes, ask doubts and study together.",
-      members: "1.8k",
-      icon: "📚"
-    },
-    {
-      id: 3,
-      name: "Tech & Programming",
-      description: "Discuss coding, projects and technology.",
-      members: "1.2k",
-      icon: "</>"
-    },
-    {
-      id: 4,
-      name: "UPSC & Competitive Exams",
-      description: "Preparation, resources and current affairs.",
-      members: "3.1k",
-      icon: "🏛"
-    },
-    {
-      id: 5,
-      name: "College Life",
-      description: "Hostel, campus life, placements and events.",
-      members: "950",
-      icon: "👥"
-    }
-  ];
+  // const servers = [
+  //   {
+  //     id: 1,
+  //     name: "General Discussion",
+  //     description: "Talk about anything — school, life, memes and more.",
+  //     members: "2.4k",
+  //     icon: "🎓"
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Study & Academics",
+  //     description: "Share notes, ask doubts and study together.",
+  //     members: "1.8k",
+  //     icon: "📚"
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Tech & Programming",
+  //     description: "Discuss coding, projects and technology.",
+  //     members: "1.2k",
+  //     icon: "</>"
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "UPSC & Competitive Exams",
+  //     description: "Preparation, resources and current affairs.",
+  //     members: "3.1k",
+  //     icon: "🏛"
+  //   },
+  //   {
+  //     id: 5,
+  //     name: "College Life",
+  //     description: "Hostel, campus life, placements and events.",
+  //     members: "950",
+  //     icon: "👥"
+  //   }
+  // ];
 
   const [isOpen , setOpen] = useState(false);
   const [Name , setName] = useState("");
   const [Desc , setDesc] = useState("");
-  const [serverL , setServerL] = useState([]);
+  const [serverL , setServerL] = useState([]); //stores servers which the user had already joined
   const [currUser , setCurr] = useState(null);
 
   const [search,setSearch] = useState("");
@@ -63,14 +63,14 @@ const joinedSearchResults = serverL
   .map((server) => ({
     ...server,
     isMember: true
-  }));
+  }));  //for frontend purpose i added isMember prop 
 
 const notJoinedSearchResults = filteresServ.map((server) => ({
   ...server,
   isMember: false
 }));
 
-const finalResults = [
+const finalResults = [  //this array contains every server whether user has joined it or not 
   ...joinedSearchResults,
   ...notJoinedSearchResults
 ];
@@ -124,7 +124,7 @@ const finalResults = [
      },[])
 
 
-  useEffect(()=>{
+  useEffect(()=>{ //this will render for once every time page will reload(this gives the servers which user had already joined )
      const getServe = async()=>{
       try{
            const response = await fetch('http://localhost:5713/serverList',{
@@ -135,7 +135,7 @@ const finalResults = [
 
            if(response.ok){
             setServerL(res.findi);
-            console.log('sussex')
+            console.log('success')
            }else{
             console.log(res.message)
            }
@@ -161,7 +161,7 @@ const finalResults = [
          const response = await fetch('http://localhost:5713/createServer',{
                  method:'POST',
                  headers:{'Content-Type' : 'application/json'},
-                 credentials:"include",
+                 credentials:"include", //This will send cookie so with the help of it i can fetch the user who created this server
                  body:JSON.stringify(data),
          })
 
@@ -180,10 +180,10 @@ const finalResults = [
       }
   }
 
-  useEffect(()=>{
+  useEffect(()=>{ //This useEffect gives the server user hasn't joined(and this useEffect runs only when search state is changed)
      const searchServer = async()=>{
         const data = {search};
-        if(search.trim() === ""){
+        if(search.trim() === ""){  //use to remove whitespaces in begin and end
           return;
         }
 
@@ -352,7 +352,7 @@ isOpen && (
 
   <div
     className="signup-card"
-    onClick={(e) => e.stopPropagation()}
+    onClick={(e) => e.stopPropagation()}   //we used stopPropogation to prevent event bubbling from one element to another element
   >
 
     {/* Tabs */}
@@ -362,7 +362,7 @@ isOpen && (
     {/* Avatar Section */}
 
     <h3 className="avatar-title">
-      PICK YOUR AVATAR
+      Enter Server details
     </h3>
       <div className="avatar-grid">
 {/* 
