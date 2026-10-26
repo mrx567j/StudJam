@@ -18,7 +18,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<LandingPage tag={tag} setTag={setTag}/>}/>
-      <Route path="/PubChat/:serverName" element={<PubChat/>}></Route>
+      <Route path="/PubChat/:serverName" element={<PubChat/>}></Route>  //It takes use to that server rooms
       <Route path="/Profile/:id"  element={<Profile tag={tag} setTag={setTag}/>}/>
       <Route path="/Recovery" element={<VerifOtp/>}/>
       <Route path="/Changepass" element={<ChangePassword/>}/>

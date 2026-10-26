@@ -353,7 +353,7 @@ useEffect(()=>{
         <aside className="sidebar">
 
          <div className="sidebar-title">
-  <span>ROOMS</span>
+  <span>{serverName}</span>
   <button className="plus-btn" onClick={()=>{setOp(true)}}>+</button>
 </div>
    <div className="rooms-list">

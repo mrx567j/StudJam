@@ -6,38 +6,45 @@ const { dbConnect } = require('./config/database');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 require('dotenv').config();
+
+//Importing my db models
 const {Use} = require("./models/User.js");
-const{mesg} = require('./models/Message.js') // importedd model where i will store my messages
+const{mesg} = require('./models/Message.js') // imported model where i will store my messages
 const {server} = require('./models/Server.js')
 const {channel} = require('./models/Channel.js')
 
 const app = express();
 const router = require('./routes/routes.js');
-const Server2 = http.createServer(app);
-const io = new Server(Server2 ,{cors: {
-        origin: 'http://localhost:3000',
+
+const Server2 = http.createServer(app); //This makes my normal server wrapped up in http to use websocket
+
+const io = new Server(Server2 ,{cors: { //This is the socket.io server class instance which attaches itself to the http server   
+        origin: 'http://localhost:3000', // and it handles the real time communication between frontend and backend
         credentials: true
     }});
 const PORT = process.env.PORT;
 
 async function sendOnlineUsers(roomName){
-const room = io.sockets.adapter.rooms.get(roomName);
-              const userIds = new Set();
+const room = io.sockets.adapter.rooms.get(roomName); //It give info of all socket (unique client connections) to that room 
+                                                     //in case there is no room .get() return undefined
 
-              if(room){
+              const userIds = new Set(); //set helps to store unique elements
+
+              if(room){ //It iterates over all socketIds that we got 
                 room.forEach((socketId) =>{
-                    const socketUser = io.sockets.sockets.get(socketId);
-
+                    const socketUser = io.sockets.sockets.get(socketId); //io.sockets.sockets is a map of connected socket IDs to their corresponding socket objects
+                                                                         //it retreives the socket object 
                     if(socketUser){
                         userIds.add(socketUser.userId.toString());
                     }
                 });
               }
 
-              const users = await Use.find({
+              const users = await Use.find({  //users gives an array 
                 email :{$in:[...userIds]}
-              }).select("email User_name Avatar")
-              io.to(roomName).emit("online_Users" ,users);
+              }).select("email User_name Avatar") //select limits the field to be send 
+
+              io.to(roomName).emit("online_Users" ,users); //backend emits this event to frontend and frontend will display these users
 }
 
 
@@ -45,7 +52,7 @@ const room = io.sockets.adapter.rooms.get(roomName);
 io.use((socket, next) => {  //Iused this middleware to get the real id of the person whose socket is connected
     console.log('reached')
     try {
-        const cookieHeader = socket.handshake.headers.cookie;
+        const cookieHeader = socket.handshake.headers.cookie; //handshake headers stores the info from browser including cookies
 
         if (!cookieHeader) {
             return next(new Error("No cookie"));
@@ -77,22 +84,22 @@ io.use((socket, next) => {  //Iused this middleware to get the real id of the pe
 });
 
 
-io.on('connection' ,  (socket)=>{
-     console.log(`User Connected ${socket.userId}` );
+io.on('connection' ,  (socket)=>{ //Here socket is the client that has connected with your socket.io
+     console.log(`User Connected ${socket.userId}` ); //it gives the socket id of that client
      
       
-     socket.on('join_room'  , async (roomName)=>{
-              socket.join(roomName);
+     socket.on('join_room'  , async (roomName)=>{ //when the join room event  emits from frontend this callback runs 
+              socket.join(roomName); //socket joins that client to that room 
               console.log(`user joined room ${roomName}`);
               socket.roomName = roomName;
 
-              await sendOnlineUsers(roomName);
+              await sendOnlineUsers(roomName); //this function will returns the active users present in that room 
               
      })
 
      
 
-     socket.on('send_message' , async (data)=>{
+     socket.on('send_message' , async (data)=>{//Important event when a client send message in that room and data is an object of message
         console.log(data);
         console.log(data.msg);
       console.log("ROOM FROM CLIENT:", data.roomName);
@@ -102,7 +109,7 @@ io.on('connection' ,  (socket)=>{
           const findi2 = await channel.findOne({name:data.roomName});
           console.log(us);
           console.log(findi2);
-          const t = await mesg.create({
+          const t = await mesg.create({  //Here it will add the messages to a database so user can see the previous messages he sent
               user_id:socket.userId,
               user_name:us.User_name,
               avatar:us.Avatar,
@@ -111,7 +118,7 @@ io.on('connection' ,  (socket)=>{
               message:data.msg
          })
          io.to(data.roomName).emit('receive_message' ,t);
-         console.log("Message sent")
+         console.log("Message sent");
 
        
 
@@ -135,7 +142,7 @@ io.on('connection' ,  (socket)=>{
 })
 
 
-
+//cors helps to prevent unauthorized requests to reach and prevents hackers to send req by masquerading a website
 app.use(cors({
     origin: 'http://localhost:3000', 
     credentials: true
