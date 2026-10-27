@@ -101,6 +101,7 @@ io.on('connection' ,  (socket)=>{ //Here socket is the client that has connected
 
      socket.on('send_message' , async (data)=>{//Important event when a client send message in that room and data is an object of message
         console.log(data);
+         console.log("FULL DATA:", JSON.stringify(data));
         console.log(data.msg);
       console.log("ROOM FROM CLIENT:", data.roomName);
         console.log(data.server_name);

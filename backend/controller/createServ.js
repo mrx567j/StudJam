@@ -49,11 +49,17 @@ exports.createServer = async(req,res)=>{
 
 
 exports.sendServerList = async(req,res)=>{
-     const token = req.cookies.token;
+     const token = req.cookies?.token;
+ try{
+        if (!token) {
+            return res.status(401).json({
+                message: "Please log in first"
+            });
+        }
      const decoded = Jwt.verify(token,process.env.JWT_SECRET)
      const emai = decoded.email;
 
-     try{
+    
     const findi2 = await Use.findOne({email:emai});
     const creatorId = findi2._id;
     const findi = await server.find({members:creatorId});
@@ -121,7 +127,7 @@ exports.searchServ = async(req,res)=>{
         $options:"i"
      }
 ,  members: {
-    $ne: user._id
+    $ne: findi1._id
   }
   })
 
@@ -141,6 +147,37 @@ exports.searchServ = async(req,res)=>{
         message:"Internal server error"
     })
 }
+}
+
+exports.addMembers = async(req,res)=>{
+              
+    const token = req.cookies.token;
+    const {serverId} = req.body;
+    const decoded = Jwt.verify(token, process.env.JWT_SECRET);
+
+    try{
+           
+        const findi1 = await Use.findOne({email:decoded.email});
+         
+        const updatedServ  = await server.findByIdAndUpdate(serverId,{$addToSet:{members:findi1._id}},{new:true});
+
+
+       if (!updatedServ) {
+            return res.status(404).json({
+                message: "Server not found"
+            });
+        }
+
+        res.status(200).json({
+            message: "Joined server successfully",
+           
+        });
+    }catch(error){
+         console.log(error);
+         return res.status(500).json({
+            message:"Internal server error"
+         })
+    }
 }
 
 

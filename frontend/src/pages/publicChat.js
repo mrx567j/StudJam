@@ -41,7 +41,9 @@ const [name , setName] = useState("");
 const {serverName} = useParams();
 const[channels , setChan] = useState([]);
 const [members ,setMem] = useState([]);
-const [c , setC] = useState("");
+const [c, setC] = useState(() => {
+    return localStorage.getItem(`selectedChannel_${serverName}`) || "";
+});
 
    const navigate = useNavigate();
 
@@ -132,25 +134,26 @@ const [c , setC] = useState("");
     
 
    useEffect(() => {
+    if (!c) return;
     // Join the initially selected room
     socket.emit("join_room", c);
 
    return () => {
     socket.emit("leave_room", c);
   };
-  }, [c]);
+  }, []);
 
  
 
   const sendMessage = async()=>{
     console.log(message);
-    console.log("goo" ,c)
+    // console.log("channel" ,c)
          const data = {
             server_name:serverName,
-            roomName: c,
-              
+            roomName:c,  
             msg: message
          }
+         console.log(data);
 
          socket.emit("send_message" , data);
  setMessage("");

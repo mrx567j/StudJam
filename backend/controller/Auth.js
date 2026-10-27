@@ -72,10 +72,13 @@ exports.LogIn = async (req,res)=>{
             const payload={
                 email:email
             }
+            const isMatch = await bcrypt.compare(password, find.password);
+            console.log("Password matches:", isMatch);
             if(await bcrypt.compare(password,find.password)){
-                let token = await JWT.sign(payload,process.env.JWT_SECRET,{  //It adds JWT signature which tells the server during auth that this token was send by this server
+                let token = JWT.sign(payload,process.env.JWT_SECRET,{  //It adds JWT signature which tells the server during auth that this token was send by this server
                     expiresIn:'12h'
                 })
+                console.log(token);
                
                 //We generally send token inside a cookie which gets stored at browser and automatically attaches to request to server so we can get token at server securily
                 //Also it is token that maintains a session between client and server
@@ -89,9 +92,10 @@ exports.LogIn = async (req,res)=>{
                     message:'LogIn Successful'
                 })
 
+            
             }else{
                 return res.json({
-                   message:'Wrong password'
+                    message:'Wrong password'
                 })
             }
       }catch(error){

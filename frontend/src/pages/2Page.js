@@ -56,6 +56,8 @@ function Servers() {
 
   const [tag2 , setTag2] =useState(false);
 
+  const[servi,setServi] = useState("");
+
 const joinedSearchResults = serverL
   .filter((server) =>
     server.name.toLowerCase().includes(search.toLowerCase())
@@ -198,7 +200,7 @@ const finalResults = [  //this array contains every server whether user has join
           const res = await response.json();
           
           if(response.ok){
-            console.log("data got")
+            console.log("data got" ,data)
              setFilt(res.findi);
           }else{
                console.log(res.message)
@@ -214,7 +216,30 @@ const finalResults = [  //this array contains every server whether user has join
   },[search])
 
 
+ const handleJoin = async(serverId)=>{
+        
+  const data = {serverId};
+  try{        
+              const response = await fetch('http://localhost:5713/addMember',{
+                                    method:'POST',
+                 headers:{'Content-Type' : 'application/json'},
+                 credentials:"include",
+                 body:JSON.stringify(data),
+              })
 
+              const res = await response.json();
+
+              if(response.ok){
+                alert('successfully joined the server')
+              }else{
+                console.log(res.message)
+              }
+
+  }catch(error){
+    console.log(error);
+
+  }
+ }
 
 
 
@@ -282,7 +307,7 @@ const finalResults = [  //this array contains every server whether user has join
             </div>
 
             {!server.isMember && (
-              <button className="server-arrow">
+              <button className="server-arrow" onClick={()=>{handleJoin(server._id)}}>
                 Join
               </button>
             )}

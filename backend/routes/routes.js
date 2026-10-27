@@ -9,7 +9,7 @@ const {getMe} = require("../controller/getUse.js");
 const {getUserProfile} = require("../controller/getUserPr.js");
 const {verify , utility , changePassword} = require("../controller/veri.js");
 const {sess} = require('../controller/isSession.js');
-const {createServer ,sendServerList ,getServerMembers,searchServ} = require('../controller/createServ.js');
+const {createServer ,sendServerList ,getServerMembers,searchServ ,addMembers} = require('../controller/createServ.js');
 
 const{createChannel,getChannel}=require('../controller/createChannel.js');
 
@@ -62,6 +62,9 @@ router.post('/serverMembers' , getServerMembers);
 
 //to search servers
 router.post('/searchServer' , searchServ);
+
+//to make people able to join
+router.post('/addMember',addMembers)
 
 module.exports = router;
 
